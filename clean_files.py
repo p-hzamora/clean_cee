@@ -124,7 +124,7 @@ class Clean_WX_TextCtrl(IValidator):
 class Clean_WK_CONST(IValidator):
     @staticmethod
     def convert_str(line: str) -> str:
-        pattern = re.compile(r"\[ wx\.NewId\(\) for _init_ctrls in range\(")
+        pattern = re.compile(r"wx\.NewId\(\)")
         if pattern.search(line):
             return None
         return line
@@ -157,6 +157,14 @@ class Clean_WX_SetValue(IValidator):
     @staticmethod
     def convert_str(line: str) -> str:
         pattern = re.compile(r"\.SetValue\((.*?)\)")
+        if pattern.search(line):
+            line = pattern.sub(r"= \1",line)
+        return line
+
+class Clean_WX_SetLabel(IValidator):
+    @staticmethod
+    def convert_str(line: str) -> str:
+        pattern = re.compile(r"\.SetLabel\((.*?)\)")
         if pattern.search(line):
             line = pattern.sub(r"= \1",line)
         return line
@@ -219,7 +227,13 @@ class Clean_WX_Heritage(IValidator):
            return f"class {pattern.search(line).group(1)}():{LAST_CHAR}"
         return line
 
-
+class Clean_barra_estado(IValidator):
+    @staticmethod
+    def convert_str(line: str) -> str:
+        pattern = re.compile(r"self\.barraEstado")
+        if pattern.search(line):
+            return None
+        return line
 
 
 class FixLines():
@@ -243,12 +257,14 @@ class FixLines():
             Clean_WX_Bind,
             Clean_WX_GetValue,
             Clean_WX_SetValue,
+            Clean_WX_SetLabel,
             Clean_WX_RadioButton,
             Clean_WX_CheckBox,
             Clean_WX_SetBackgroundStyle,
             Clean_WX_MessageBoxAsRaise_print,
             Clean_MiChoice,
-            Clean_WX_Heritage
+            Clean_WX_Heritage,
+            Clean_barra_estado
         )
 
     def fix(self)-> str:
@@ -262,8 +278,13 @@ class FixLines():
 
 
 def clean_path(ruta:Path)->int:
+    
+    if not ruta.is_dir():
+        lista = [ruta]
+    else:
+        lista = ruta.rglob("*.py") 
     count = 0
-    for x in ruta.rglob("*.py"):
+    for x in lista:
         old_name = x
         new_name = x.with_name(f"{x.stem}_modified.py")
         # read old .py file and write new lines on new_name file
@@ -292,7 +313,14 @@ def clean_path(ruta:Path)->int:
 if __name__ == "__main__":
     ruta= Path.home()/"Downloads"/"cex"/"cex2_1_custom"
     
-    rutas = [x for x in ruta.iterdir() if x.is_dir()]
-    for x in rutas:
-        count = clean_path(x)
-        print(f"Se han modificado '{count}' ficheros en {x.stem}")
+    # rutas = {x.stem: x for x in ruta.iterdir() if x.is_dir()}
+    # del rutas["openopt"]
+    # del rutas["PIL"]
+    # del rutas["lxml"]
+
+
+    # for x in rutas.values():
+    #     count = clean_path(x)
+    #     print(f"Se han modificado '{count}' ficheros en {x.stem}")
+
+    clean_path(ruta/"wxFrame1.py")
