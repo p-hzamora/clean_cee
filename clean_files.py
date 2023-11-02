@@ -278,6 +278,16 @@ class FixLines():
 
 
 def clean_path(ruta:Path)->int:
+    def is_comment(line:str)->bool:
+        start = re.compile(r'''^['"]{3}''')
+        end = re.compile(r'''['"]{3}$''')
+        line = line.strip()
+
+        if start.search(line) or end.search(line):
+            return True
+        return False
+
+
     
     if not ruta.is_dir():
         lista = [ruta]
@@ -289,14 +299,16 @@ def clean_path(ruta:Path)->int:
         new_name = x.with_name(f"{x.stem}_modified.py")
         # read old .py file and write new lines on new_name file
         with codecs.open(old_name,"r",encoding="utf-8") as source, codecs.open(new_name,"w",encoding="utf-8") as destination:
+            
             avoid:bool = False
             for line in source:
-                if line.strip()== '"""' and avoid is False:
+                if is_comment(line) and avoid is False:
                     avoid = True
                     continue
-                elif line.strip()== '"""' and avoid is True:
+                elif is_comment(line) and avoid is True:
                     avoid = False
                     continue
+
                 if not avoid:
                     new_line = FixLines(line).fix()
                     if new_line is not None:
@@ -313,14 +325,12 @@ def clean_path(ruta:Path)->int:
 if __name__ == "__main__":
     ruta= Path.home()/"Downloads"/"cex"/"cex2_1_custom"
     
-    # rutas = {x.stem: x for x in ruta.iterdir() if x.is_dir()}
-    # del rutas["openopt"]
-    # del rutas["PIL"]
-    # del rutas["lxml"]
+    rutas = {x.stem: x for x in ruta.iterdir() if x.is_dir()}
+    del rutas["openopt"]
+    del rutas["PIL"]
+    del rutas["lxml"]
 
 
-    # for x in rutas.values():
-    #     count = clean_path(x)
-    #     print(f"Se han modificado '{count}' ficheros en {x.stem}")
-
-    clean_path(ruta/"wxFrame1.py")
+    for x in rutas.values():
+        count = clean_path(x)
+        print(f"Se han modificado '{count}' ficheros en {x.stem}")
