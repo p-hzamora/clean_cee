@@ -3,167 +3,69 @@
 # Decompiled from: Python 3.10.9 | packaged by Anaconda, Inc. | (main, Mar  8 2023, 10:42:25) [MSC v.1916 64 bit (AMD64)]
 # Embedded file name: Instalaciones\equipos.pyc
 # Compiled at: 2015-02-09 18:39:49
-"""
-Modulo: equipos.py
-
-"""
 import math, perfilesTerciario
 
 class EQ_ED_AireAire_BDC:
-    """
-    Clase: EQ_ED_AireAire_BDC del modulo equipos.py
-
-    """
 
     def __init__(self):
-        """
-        Constructor de la clase
-
-        """
         self.descripcion = 'Equipo de expansion directa aire-aire bomba de calor'
 
     def conCal_FCP(self, fcp_cal):
-        """
-        Metodo: conCal_FCP
-
-        ARGUMENTOS:
-                fcp_cal:
-        """
         mod = 0.08565215 + 0.93881371 * fcp_cal - 0.1834361 * fcp_cal ** 2 + 0.15897022 * fcp_cal ** 3
         return mod
 
     def conCal_T(self, Th_ext):
-        """
-        Metodo: conCal_T
-
-        ARGUMENTOS:
-                Th_ext:
-        """
         mod = 1.201222828 - 0.040063338 * Th_ext + 0.0010877 * Th_ext ** 2
         return mod
 
     def conRef_FCP(self, fcp_ref):
-        """
-        Metodo: conRef_FCP
-
-        ARGUMENTOS:
-                fcp_ref:
-        """
         mod = 0.20123007 - 0.0312175 * fcp_ref + 1.9504979 * fcp_ref ** 2 - 1.1205104 * fcp_ref ** 3
         return mod
 
     def conRef_T(self, Th_int, T_ext):
-        """
-        Metodo: conRef_T
-
-        ARGUMENTOS:
-                Th_int:
-                T_ext:
-        """
         mod = 0.1117801 + 0.028493334 * Th_int - 0.000411156 * Th_int ** 2 + 0.021414276 * T_ext + 0.000161125 * T_ext ** 2 - 0.000679104 * Th_int * T_ext
         return mod
 
 
 class EQ_ED_AireAgua_BDC:
-    """
-    Clase: EQ_ED_AireAgua_BDC del modulo equipos.py
-
-    """
 
     def __init__(self):
-        """
-        Constructor de la clase
-
-        """
         self.descripcion = 'Equipo de expansion directa bomba de calor aire-agua'
 
     def conCal_FCP(self, fcp):
-        """
-        Metodo: conCal_FCP
-
-        ARGUMENTOS:
-                fcp:
-        """
         mod = 0.08565216 + 0.93881381 * fcp - 0.18343613 * fcp ** 2 + 0.15897022 * fcp ** 3
         return mod
 
     def conCal_T(self, Th_ext):
-        """
-        Metodo: conCal_T
-
-        ARGUMENTOS:
-                Th_ext:
-        """
         mod = 0.9496 + 0.009 * Th_ext - 0.0001 * Th_ext ** 2
         return mod
 
 
 class EQ_ED_UnidadExterior:
-    """
-    Clase: EQ_ED_UnidadExterior del modulo equipos.py
-
-    """
 
     def __init__(self):
-        """
-        Constructor de la clase
-
-        """
         self.descripcion = 'Equipo unidad exterior en expansion directa'
 
     def conCal_T(self, Th_ext):
-        """
-        Metodo: conCal_T
-
-        ARGUMENTOS:
-                Th_ext:
-        """
         mod = 1.201222828 - 0.040063338 * Th_ext + 0.0010877 * Th_ext ** 2
         return mod
 
     def conCal_FCP(self, fcp):
-        """
-        Metodo: conCal_FCP
-
-        ARGUMENTOS:
-                fcp:
-        """
         mod = 0.08565216 + 0.93881381 * fcp - 0.18343613 * fcp ** 2 + 0.15897022 * fcp ** 3
         return mod
 
     def conRef_FCP(self, fcp_ref):
-        """
-        Metodo: conRef_FCP
-
-        ARGUMENTOS:
-                fcp_ref:
-        """
         mod = 0.20123007 - 0.0312175 * fcp_ref + 1.9504979 * fcp_ref ** 2 - 1.1205104 * fcp_ref ** 3
         return mod
 
     def conRef_T(self, Th_int, T_ext):
-        """
-        Metodo: conRef_T
-
-        ARGUMENTOS:
-                Th_int:
-                T_ext:
-        """
         mod = 0.1117801 + 0.028493334 * Th_int - 0.000411156 * Th_int ** 2 + 0.021414276 * T_ext + 0.000161125 * T_ext ** 2 - 0.000679104 * Th_int * T_ext
         return mod
 
 
 class bombaCaudalVariable:
-    """
-    Clase: bombaCaudalVariable  del modulo equipos.py
-
-    """
 
     def __init__(self):
-        """
-        Constructor de la clase
-
-        """
         self.descripcion = 'Bomba de Caudal Variable: Definida por curva'
         self.potenciaElectricaNominal = 0.1
         self.nombre = ''
@@ -173,27 +75,13 @@ class bombaCaudalVariable:
         self.c4 = 0.0
 
     def potFCP(self, fcp):
-        """
-        Metodo: potFCP
-
-        ARGUMENTOS:
-                fcp:
-        """
         potenciaConsumida = self.potenciaElectricaNominal * (self.c1 + self.c2 * fcp + self.c3 * fcp ** 2 + self.c4 * fcp ** 3)
         return potenciaConsumida
 
 
 class bombaCaudalVariable2:
-    """
-    Clase: bombaCaudalVariable2  del modulo equipos.py
-
-    """
 
     def __init__(self):
-        """
-        Constructor de la clase
-
-        """
         self.descripcion = 'Bomba de Caudal Variable: Definida por escalones'
         self.potenciaElectricaNominal = 0.1
         self.nombre = ''
@@ -201,12 +89,6 @@ class bombaCaudalVariable2:
         self.escalonesPotencia = []
 
     def potFCP(self, fcp):
-        """
-        Metodo: potFCP
-
-        ARGUMENTOS:
-                fcp:
-        """
         for f, escalonesPotencia in zip(self.fcp, self.escalonesPotencia):
             fraccionPotenciaConsumida = escalonesPotencia
             if f >= fcp:
@@ -216,40 +98,20 @@ class bombaCaudalVariable2:
 
 
 class ventiladorCaudalConstante:
-    """
-    Clase: ventiladorCaudalConstante  del modulo equipos.py
-
-    """
 
     def __init__(self):
-        """
-        Constructor de la clase
-
-        """
         self.descripcion = 'Ventilador de Caudal Constante'
         self.potenciaElectricaNominal = 0.1
         self.nombre = ''
 
     def pot(self):
-        """
-        Metodo: pot
-
-        """
         potenciaConsumida = self.potenciaElectricaNominal
         return potenciaConsumida
 
 
 class ventiladorCaudalVariable:
-    """
-    Clase: ventiladorCaudalVariable  del modulo equipos.py
-
-    """
 
     def __init__(self):
-        """
-        Constructor de la clase
-
-        """
         self.descripcion = 'Ventilador de Caudal Variable: Definida por curva'
         self.potenciaElectricaNominal = 0.1
         self.nombre = ''
@@ -260,27 +122,13 @@ class ventiladorCaudalVariable:
         self.c5 = 0.0
 
     def potFCP(self, fcp):
-        """
-        Metodo: potFCP
-
-        ARGUMENTOS:
-                fcp:
-        """
         potenciaConsumida = self.potenciaElectricaNominal * (self.c1 + self.c2 * fcp + self.c3 * fcp ** 2 + self.c4 * fcp ** 3 + self.c5 * fcp ** 4)
         return potenciaConsumida
 
 
 class ventiladorCaudalVariable2:
-    """
-    Clase: ventiladorCaudalVariable2 del modulo equipos.py
-
-    """
 
     def __init__(self):
-        """
-        Constructor de la clase
-
-        """
         self.descripcion = 'Ventilador de Caudal Variable: Definido por escalones'
         self.potenciaElectricaNominal = 0.1
         self.nombre = ''
@@ -288,12 +136,6 @@ class ventiladorCaudalVariable2:
         self.escalonesPotencia = [0.15, 0.15, 0.16, 0.2, 0.25, 0.34, 0.45, 0.62, 0.83, 1.0]
 
     def potFCP(self, fcp):
-        """
-        Metodo: potFCP
-
-        ARGUMENTOS:
-                fcp:
-        """
         for f, escalonesPotencia in zip(self.fcp, self.escalonesPotencia):
             fraccionPotenciaConsumida = escalonesPotencia
             if f >= fcp:
@@ -303,40 +145,20 @@ class ventiladorCaudalVariable2:
 
 
 class TorreRefrigeracionVelocidadConstante:
-    """
-    Clase: TorreRefrigeracionVelocidadConstante  del modulo equipos.py
-
-    """
 
     def __init__(self):
-        """
-        Constructor de la clase
-
-        """
         self.descripcion = 'Ventilador de Caudal Constante'
         self.potenciaElectricaNominal = 0.1
         self.nombre = ''
 
     def pot(self):
-        """
-        Metodo: pot
-
-        """
         potenciaConsumida = self.potenciaElectricaNominal
         return potenciaConsumida
 
 
 class TorreRefrigeracionVelocidadVariable:
-    """
-    Clase: TorreRefrigeracionVelocidadVariable  del modulo equipos.py
-
-    """
 
     def __init__(self):
-        """
-        Constructor de la clase
-
-        """
         self.descripcion = 'Ventilador de Caudal Variable: Definida por curva'
         self.potenciaElectricaNominal = 0.1
         self.nombre = ''
@@ -346,27 +168,13 @@ class TorreRefrigeracionVelocidadVariable:
         self.c4 = 0.9484
 
     def potFCP(self, fcp):
-        """
-        Metodo: potFCP
-
-        ARGUMENTOS:
-                fcp:
-        """
         potenciaConsumida = self.potenciaElectricaNominal * (self.c1 + self.c2 * fcp + self.c3 * fcp ** 2 + self.c4 * fcp ** 3)
         return potenciaConsumida
 
 
 class TorreRefrigeracionVelocidadVariable2:
-    """
-    Clase: TorreRefrigeracionVelocidadVariable2 del modulo equipos.py
-
-    """
 
     def __init__(self):
-        """
-        Constructor de la clase
-
-        """
         self.descripcion = 'Ventilador de Caudal Variable: Definido por escalones'
         self.potenciaElectricaNominal = 0.1
         self.nombre = ''
@@ -374,12 +182,6 @@ class TorreRefrigeracionVelocidadVariable2:
         self.escalonesPotencia = [0.15, 0.15, 0.16, 0.2, 0.25, 0.34, 0.45, 0.62, 0.83, 1.0]
 
     def potFCP(self, fcp):
-        """
-        Metodo: potFCP
-
-        ARGUMENTOS:
-                fcp:
-        """
         for f, escalonesPotencia in zip(self.fcp, self.escalonesPotencia):
             fraccionPotenciaConsumida = escalonesPotencia
             if f >= fcp:
@@ -389,16 +191,8 @@ class TorreRefrigeracionVelocidadVariable2:
 
 
 class CalderaCondensacion:
-    """
-    Clase: CalderaCondensacion del modulo equipos.py
-
-    """
 
     def __init__(self):
-        """
-        Constructor de la clase
-
-        """
         self.descripcion = 'Caldera de condensacion definida mediante una curva bicuadratica'
         self.potenciaNominal = 100.0
         self.nombre = 'Caldera de Condensacion'
@@ -415,22 +209,11 @@ class CalderaCondensacion:
         self.tempMax = 85.0
 
     def rendimientoNominal(self):
-        """
-        Metodo: rendimientoNominal
-
-        """
         rendimiento = 91.0 + math.log(self.potenciaNominal, 10)
         self.rendimientoNominalPlenaCarga = rendimiento / 100.0
         return rendimiento
 
     def potFcpT(self, fcp, t):
-        """
-        Metodo: potFcpT
-
-        ARGUMENTOS:
-                fcp:
-                t:
-        """
         if fcp < self.fcpMin:
             fcp = self.fcpMin
         elif fcp > self.fcpMax:
@@ -445,16 +228,8 @@ class CalderaCondensacion:
 
 
 class CalderaBajaTemperatura:
-    """
-    Clase: CalderaBajaTemperatura del modulo equipos.py
-
-    """
 
     def __init__(self):
-        """
-        Constructor de la clase
-
-        """
         self.descripcion = 'Caldera de baja temperatura definida mediante una curva bicubica'
         self.potenciaNominal = 100.0
         self.nombre = 'Caldera de Baja Temperatura'
@@ -475,22 +250,11 @@ class CalderaBajaTemperatura:
         self.tempMax = 85.0
 
     def rendimientoNominal(self):
-        """
-        Metodo: rendimientoNominal
-
-        """
         rendimiento = 87.5 + 1.5 * math.log(self.potenciaNominal, 10)
         self.rendimientoNominalPlenaCarga = rendimiento / 100.0
         return rendimiento
 
     def potFcpT(self, fcp, t):
-        """
-        Metodo: potFcpT
-
-        ARGUMENTOS:
-                fcp:
-                t:
-        """
         if fcp < self.fcpMin:
             fcp = self.fcpMin
         elif fcp > self.fcpMax:
@@ -505,16 +269,8 @@ class CalderaBajaTemperatura:
 
 
 class CalderaConvencional:
-    """
-    Clase: CalderaConvencional del modulo equipos.py
-
-    """
 
     def __init__(self):
-        """
-        Constructor de la clase
-
-        """
         self.descripcion = 'Caldera Convencional. Definida por una curva cÃºbica.'
         self.potenciaNominal = 100.0
         self.nombre = 'Caldera convencional - típica año 1983'
@@ -527,22 +283,11 @@ class CalderaConvencional:
         self.fcpMax = 1.0
 
     def rendimientoNominal(self):
-        """
-        Metodo: rendimientoNominal
-
-        """
         rendimiento = 84.0 + 2.0 * math.log(self.potenciaNominal, 10)
         self.rendimientoNominalPlenaCarga = rendimiento / 100.0
         return rendimiento
 
     def potFcp(self, fcp):
-        """
-        Metodo: potFcp
-        Nos devuelve la potencia consumida en función del fcp
-        
-        ARGUMENTOS:
-                fcp:
-        """
         if fcp < self.fcpMin:
             fcp = self.fcpMin
         elif fcp > self.fcpMax:
@@ -553,20 +298,8 @@ class CalderaConvencional:
 
 
 class ExpansionDirectaAireAguaBombaDeCalorModoCalor:
-    """
-    Clase: ExpansionDirectaAireAguaBombaDeCalorModoCalor del modulo equipos.py
-    Equipo de expansion directa aire-agua bomba de calor
-    datos calener VYP 
-    con_FCP-EQ_ED_AireAguaBDC-ACS-Defecto = 0.0856522 + 0.938814 VI1 - 0.183436 VI1² + 0.15897 VI1³
-    conCal_T-EQ_ED_AireAire_BDC-Defecto = 1.20122 + 0 VI1 + 0 VI1² - 0.0400633 VI2 + 0.0010877 VI2² + 0 VI1 VI2
-
-    """
 
     def __init__(self):
-        """
-        Constructor de la clase
-
-        """
         self.descripcion = 'Expansión directa aire-aire bomba de calor'
         self.potenciaNominal = 100.0
         self.nombre = 'Expansion directa aire-aire bomba de calor'
@@ -608,18 +341,6 @@ class ExpansionDirectaAireAguaBombaDeCalorModoCalor:
         return capacidad
 
     def potFcpTIntTHExt(self, fcp, tInt, tHExt):
-        """
-        Metodo: potFcpTIntTHExt
-        Devuelve la potencia consumida en funcion de:
-        fcp : factor de carga parcial
-        tInt: temperatura Interior
-        tHext: temperatura humeda exterior
-
-        ARGUMENTOS:
-            fcp:
-            tInt:
-            tHExt:
-        """
         if fcp < self.fcpMin:
             fcp = self.fcpMin
         elif fcp > self.fcpMax:
@@ -639,20 +360,8 @@ class ExpansionDirectaAireAguaBombaDeCalorModoCalor:
 
 
 class ExpansionDirectaAireAireBombaDeCalorModoCalor:
-    """
-    Clase: ExpansionDirectaAireAireBombaDeCalorModoCalor del modulo equipos.py
-    Equipo de expansion directa aire-agua bomba de calor
-    datos calener VYP 
-    con_FCP-EQ_ED_AireAguaBDC-ACS-Defecto = 0.0856522 + 0.938814 VI1 - 0.183436 VI1² + 0.15897 VI1³
-    conCal_T-EQ_ED_AireAire_BDC-Defecto = 1.20122 + 0 VI1 + 0 VI1² - 0.0400633 VI2 + 0.0010877 VI2² + 0 VI1 VI2
-
-    """
 
     def __init__(self):
-        """
-        Constructor de la clase
-
-        """
         self.descripcion = 'Expansión directa aire-aire bomba de calor'
         self.potenciaNominal = 100.0
         self.nombre = 'Expansion directa aire-aire bomba de calor'
@@ -694,18 +403,6 @@ class ExpansionDirectaAireAireBombaDeCalorModoCalor:
         return capacidad
 
     def potFcpTIntTHExt(self, fcp, tInt, tHExt):
-        """
-        Metodo: potFcpTIntTHExt
-        Devuelve la potencia consumida en funcion de:
-        fcp : factor de carga parcial
-        tInt: temperatura Interior
-        tHext: temperatura humeda exterior
-
-        ARGUMENTOS:
-            fcp:
-            tInt:
-            tHExt:
-        """
         if fcp < self.fcpMin:
             fcp = self.fcpMin
         elif fcp > self.fcpMax:
@@ -725,16 +422,8 @@ class ExpansionDirectaAireAireBombaDeCalorModoCalor:
 
 
 class VRVModoCalor:
-    """
-    Clase: VRVModoCalor del modulo equipos.py
-
-    """
 
     def __init__(self):
-        """
-        Constructor de la clase
-
-        """
         self.descripcion = 'Expansión directa aire-aire bomba de calor'
         self.potenciaNominal = 100.0
         self.nombre = 'Expansion directa aire-aire bomba de calor'
@@ -776,14 +465,6 @@ class VRVModoCalor:
         return capacidad
 
     def potFcpTIntTHExt(self, fcp, tInt, tHExt):
-        """
-        Metodo: potFcpTIntTHExt
-
-        ARGUMENTOS:
-                fcp:
-                tInt:
-                tHExt:
-        """
         if fcp < self.fcpMin:
             fcp = self.fcpMin
         elif fcp > self.fcpMax:
@@ -820,16 +501,8 @@ class EquiposRefrigeracionDefinidosPorCurva:
 
 
 class ExpansionDirectaAireAireBombaDeCalorModoFrio(EquiposRefrigeracionDefinidosPorCurva):
-    """
-    Clase: ExpansionDirectaAireAireBombaDeCalorModoFrio del modulo equipos.py
-
-    """
 
     def __init__(self):
-        """
-        Constructor de la clase
-
-        """
         self.descripcion = 'Expansión directa aire-aire bomba de calor'
         self.potenciaNominal = 100.0
         self.nombre = 'Expansion directa aire-aire bomba de calor'
@@ -871,14 +544,6 @@ class ExpansionDirectaAireAireBombaDeCalorModoFrio(EquiposRefrigeracionDefinidos
         return capacidad
 
     def potFcpTHIntTExt(self, fcp, tHInt, tExt):
-        """
-        Metodo: potFcpTHIntTExt
-
-        ARGUMENTOS:
-            fcp:
-            tHInt:
-            tExt:
-        """
         if fcp < self.fcpMin:
             fcp = self.fcpMin
         elif fcp > self.fcpMax:
@@ -898,16 +563,8 @@ class ExpansionDirectaAireAireBombaDeCalorModoFrio(EquiposRefrigeracionDefinidos
 
 
 class ExpansionDirectaAguaAireBombaDeCalorModoFrio(EquiposRefrigeracionDefinidosPorCurva):
-    """
-    Clase: ExpansionDirectaAireAireBombaDeCalorModoFrio del modulo equipos.py
-
-    """
 
     def __init__(self):
-        """
-        Constructor de la clase
-
-        """
         self.descripcion = 'Expansión directa aire-aire bomba de calor'
         self.potenciaNominal = 100.0
         self.nombre = 'Expansion directa aire-aire bomba de calor'
@@ -951,14 +608,6 @@ class ExpansionDirectaAguaAireBombaDeCalorModoFrio(EquiposRefrigeracionDefinidos
         return capacidad
 
     def potFcpTHIntTExt(self, fcp, tHInt, tExt):
-        """
-        Metodo: potFcpTHIntTExt
-
-        ARGUMENTOS:
-                fcp:
-                tHInt:
-                tExt:
-        """
         tExt = tExt + self.temperaturaAproximacion
         if fcp < self.fcpMin:
             fcp = self.fcpMin
@@ -979,18 +628,8 @@ class ExpansionDirectaAguaAireBombaDeCalorModoFrio(EquiposRefrigeracionDefinidos
 
 
 class ExpansionDirectaAguaAireBombaDeCalorModoFrioVRV(EquiposRefrigeracionDefinidosPorCurva):
-    """
-    Clase: ExpansionDirectaAireAireBombaDeCalorModoFrio del modulo equipos.py
-    Derivada a partir de la condensada por agua del calener GT,
-    pero con la degradación de rendimiento de la del energyPlus
-
-    """
 
     def __init__(self):
-        """
-        Constructor de la clase
-
-        """
         self.descripcion = 'Expansión directa aire-aire bomba de calor'
         self.potenciaNominal = 100.0
         self.nombre = 'Expansion directa aire-aire bomba de calor'
@@ -1034,14 +673,6 @@ class ExpansionDirectaAguaAireBombaDeCalorModoFrioVRV(EquiposRefrigeracionDefini
         return capacidad
 
     def potFcpTHIntTExt(self, fcp, tHInt, tExt):
-        """
-        Metodo: potFcpTHIntTExt
-
-        ARGUMENTOS:
-                fcp:
-                tHInt:
-                tExt:
-        """
         tExt = tExt + self.temperaturaAproximacion
         if fcp < self.fcpMin:
             fcp = self.fcpMin
@@ -1062,16 +693,8 @@ class ExpansionDirectaAguaAireBombaDeCalorModoFrioVRV(EquiposRefrigeracionDefini
 
 
 class VRVModoFrio(EquiposRefrigeracionDefinidosPorCurva):
-    """
-    Clase: VRVModoFrio del modulo equipos.py
-
-    """
 
     def __init__(self):
-        """
-        Constructor de la clase
-
-        """
         self.descripcion = 'Expansión directa aire-aire bomba de calor'
         self.potenciaNominal = 100.0
         self.nombre = 'Expansion directa aire-aire bomba de calor'
@@ -1113,14 +736,6 @@ class VRVModoFrio(EquiposRefrigeracionDefinidosPorCurva):
         return capacidad
 
     def potFcpTHIntTExt(self, fcp, tHInt, tExt):
-        """
-        Metodo: potFcpTHIntTExt
-
-        ARGUMENTOS:
-            fcp:
-            tHInt:
-            tExt:
-        """
         if fcp < self.fcpMin:
             fcp = self.fcpMin
         elif fcp > self.fcpMax:
@@ -1142,16 +757,8 @@ class VRVModoFrio(EquiposRefrigeracionDefinidosPorCurva):
 
 
 class VRVModoFrioAireAgua:
-    """
-    Clase: VRVModoFrio del modulo equipos.py
-
-    """
 
     def __init__(self):
-        """
-        Constructor de la clase
-
-        """
         self.descripcion = 'Expansión directa aire-agua bomba de calor'
         self.potenciaNominal = 100.0
         self.nombre = 'Expansion directa aire-agua bomba de calor'
@@ -1174,14 +781,6 @@ class VRVModoFrioAireAgua:
         self.tExtMax = 50.0
 
     def potFcpTHIntTExt(self, fcp, tHInt, tExt):
-        """
-        Metodo: potFcpTHIntTExt
-
-        ARGUMENTOS:
-                fcp:
-                tHInt:
-                tExt:
-        """
         if fcp < self.fcpMin:
             fcp = self.fcpMin
         elif fcp > self.fcpMax:
@@ -1203,14 +802,6 @@ class VRVModoFrioAireAgua:
 
 
 def estimacionCargaEscalonadaCalefaccion(zona, uso, porcentajeDesde, porcentajeDeLaPotenciaTotalAportadoPorEsteGenerador):
-    """
-    Metodo: estimacionCargaEscalonadaCalefaccion
-
-    ARGUMENTOS:
-                zona:
-                uso:
-                porcentajeDesd:
-    """
     perfil = perfilesTerciario.PerfilDemandaCalefaccion(zona, uso)
     fcpSistema = map((lambda x: x / 10.0 + 0.05), range(10))
     aux = map((lambda x, y: x / y), perfil, fcpSistema)
@@ -1249,16 +840,6 @@ def estimacionCargaEscalonadaCalefaccion(zona, uso, porcentajeDesde, porcentajeD
 
 
 def estimacionRendimientoEstacionalBDCCalefaccion(zona, uso, tipoGenerador, rendNominal, porcentajeDesde, porcentajeDeLaPotenciaTotalAportadoPorEsteGenerador):
-    """
-    Metodo: estimacionRendimientoEstacionalBDCCalefaccion
-
-    ARGUMENTOS:
-                zona:
-                uso:
-                tipoGenerador:
-                rendNominal:
-                porcentajeDesd:
-    """
     perfil = perfilesTerciario.PerfilDemandaCalefaccion(zona, uso)
     perfilTempHumExt = perfilesTerciario.PerfilTemperaturaHumedaCalefaccion(zona, uso)
     fcpSistema = map((lambda x: x / 10.0 + 0.05), range(10))
@@ -1306,17 +887,6 @@ def estimacionRendimientoEstacionalBDCCalefaccion(zona, uso, tipoGenerador, rend
 
 
 def estimacionRendimientoEstacionalBDCACS(zona, uso, tipoGenerador, rendNominal, porcentajeDesde, porcentajeDeLaPotenciaTotalAportadoPorEsteGenerador):
-    """
-    Metodo: estimacionRendimientoEstacionalBDCACS
-
-    ARGUMENTOS: (mantenemos los mismos argumentos en estimacionRendimientoEstacionalBDCCalefaccion
-                aunque algunos no hacen falta):
-                zona:
-                uso:
-                tipoGenerador:
-                rendNominal:
-                porcentajeDesd:
-    """
     perfil = [
      0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0]
     perfilTemperaturaHumedaCalefaccion = perfilesTerciario.PerfilTemperaturaHumedaCalefaccion(zona, uso)
@@ -1360,16 +930,6 @@ def estimacionRendimientoEstacionalBDCACS(zona, uso, tipoGenerador, rendNominal,
 
 
 def estimacionRendimientoEstacionalBDCRefrigeracion(zona, uso, tipoGenerador, rendNominal, porcentajeDesde, porcentajeDeLaPotenciaTotalAportadoPorEsteGenerador):
-    """
-    Metodo: estimacionRendimientoEstacionalBDCRefrigeracion
-
-    ARGUMENTOS:
-                zona:
-                uso:
-                tipoGenerador:
-                rendNominal:
-                porcentajeDesd:
-    """
     perfil = perfilesTerciario.PerfilDemandaRefrigeracion(zona, uso)
     perfilTempSecExt = perfilesTerciario.PerfilTemperaturaSecaRefrigeracion(zona, uso)
     fcpSistema = map((lambda x: x / 10.0 + 0.05), range(10))
@@ -1417,16 +977,6 @@ def estimacionRendimientoEstacionalBDCRefrigeracion(zona, uso, tipoGenerador, re
 
 
 def estimacionRendimientoEstacionalBDCRefrigeracionCondensadaAgua(zona, uso, tipoGenerador, rendNominal, porcentajeDesde, porcentajeDeLaPotenciaTotalAportadoPorEsteGenerador):
-    """
-    Metodo: estimacionRendimientoEstacionalBDCRefrigeracion
-
-    ARGUMENTOS:
-                zona:
-                uso:
-                tipoGenerador:
-                rendNominal:
-                porcentajeDesd:
-    """
     perfil = perfilesTerciario.PerfilDemandaRefrigeracion(zona, uso)
     perfilTempHumExt = perfilesTerciario.PerfilTemperaturaHumedaRefrigeracion(zona, uso)
     fcpSistema = map((lambda x: x / 10.0 + 0.05), range(10))

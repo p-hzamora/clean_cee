@@ -3,77 +3,19 @@
 # Decompiled from: Python 3.10.9 | packaged by Anaconda, Inc. | (main, Mar  8 2023, 10:42:25) [MSC v.1916 64 bit (AMD64)]
 # Embedded file name: Instalaciones\panelInstalacionesBotones.pyc
 # Compiled at: 2015-02-20 14:25:47
-"""
-Modulo: panelInstalacionesBotones.py
-
-"""
 from MedidasDeMejora.funcionActualizarMMInstalacionesAlCambiarSuperficie import eliminarSubgrupoDeConjuntosMM, existenInstalacionesColgandoDeZonaModificadaOEliminadaEnConjuntosMM, actualizarSuperficieIluminacionDeConjuntosMM
 from undo import eventoUndo
 import Calculos.calculoSuperficies as calculoSuperficies, Instalaciones.dialogoConfirma as dialogoConfirma, copy, undo, ventanaSubgrupo, wx, logging
-wxID_PANEL1, wxID_PANEL1ANADIRBOTON, wxID_PANEL1BORRARBOTON, wxID_PANEL1MODIFICARBOTON, wxID_PANEL1VISTACLASICABOT, wxID_PANEL1VISTANORMALBOT = [ wx.NewId() for _init_ctrls in range(6) ]
 
 class panelBotones(wx.Panel):
-    """
-    Clase: panelBotones del modulo panelInstalacionesBotones.py
-
-    """
 
     def _init_ctrls(self, prnt, ide, posi, siz, styl, nam):
-        """
-        Metodo: _init_ctrls
-
-        ARGUMENTOS:
-                 prnt:
-                ide:
-                 posi:
-                 siz:
-                 styl:
-                 nam:
-        """
-        wx.Panel.__init__(self, id=ide, name=nam, parent=prnt, pos=posi, size=siz, style=styl)
-        self.SetBackgroundColour('white')
-        self.anadirBoton = wx.Button(id=wxID_PANEL1ANADIRBOTON, label=_('Añadir'), name='anadirBoton', parent=self, pos=wx.Point(0, 0), size=wx.Size(75, 23), style=0)
-        self.anadirBoton.Bind(wx.EVT_BUTTON, self.OnAnadirBotonButton, id=wxID_PANEL1ANADIRBOTON)
-        self.anadirBoton.SetForegroundColour(wx.Colour(0, 64, 128))
-        self.anadirBoton.SetBackgroundColour('white')
-        self.modificarBoton = wx.Button(id=wxID_PANEL1MODIFICARBOTON, label=_('Modificar'), name='modificarBoton', parent=self, pos=wx.Point(90, 0), size=wx.Size(75, 23), style=0)
-        self.modificarBoton.Bind(wx.EVT_BUTTON, self.OnmodificarBoton, id=wxID_PANEL1MODIFICARBOTON)
-        self.modificarBoton.SetForegroundColour(wx.Colour(0, 64, 128))
-        self.modificarBoton.SetBackgroundColour('white')
-        self.borrarBoton = wx.Button(id=wxID_PANEL1BORRARBOTON, label=_('Borrar'), name='borrarBoton', parent=self, pos=wx.Point(225, 0), size=wx.Size(75, 23), style=0)
-        self.borrarBoton.Bind(wx.EVT_BUTTON, self.OnBorrarBotonButton, id=wxID_PANEL1BORRARBOTON)
-        self.borrarBoton.SetForegroundColour(wx.Colour(0, 64, 128))
-        self.borrarBoton.SetBackgroundColour('white')
-        self.vistaClasicaBoton = wx.Button(id=wxID_PANEL1VISTACLASICABOT, label=_('Vista clásica'), name='vistaClasicaBoton', parent=self, pos=wx.Point(610, 0), size=wx.Size(100, 23), style=0)
-        self.vistaClasicaBoton.Bind(wx.EVT_BUTTON, self.OnVistaClasicaBoton, id=wxID_PANEL1VISTACLASICABOT)
-        self.vistaClasicaBoton.SetBackgroundColour(wx.Color(240, 240, 240))
-        self.vistaNormalBoton = wx.Button(id=wxID_PANEL1VISTANORMALBOT, label=_('Vista normal'), name='vistaNormalBoton', parent=self, pos=wx.Point(610, 0), size=wx.Size(100, 23), style=0)
-        self.vistaNormalBoton.Bind(wx.EVT_BUTTON, self.OnVistaNormalBoton, id=wxID_PANEL1VISTANORMALBOT)
-        self.vistaNormalBoton.Show(False)
-        self.vistaNormalBoton.SetBackgroundColour(wx.Color(240, 240, 240))
 
     def __init__(self, parent, id, pos, size, style, name):
-        """
-        Constructor de la clase
-
-        ARGUMENTOS:
-                 parent:
-                 id:
-                 pos:
-                 size:
-                 style:
-                 name:
-        """
         self._init_ctrls(parent, id, pos, size, style, name)
         self.parent = parent
 
     def quitaBlancos(self, cadena):
-        """
-        Metodo: quitaBlancos
-
-        ARGUMENTOS:
-                cadena:
-        """
         quita = True
         while quita == True:
             if cadena.endswith(' ') == True:
@@ -84,23 +26,17 @@ class panelBotones(wx.Panel):
         return cadena
 
     def OnAnadirBotonButton(self, event):
-        """
-        Metodo: OnAnadirBotonButton
-
-        ARGUMENTOS:
-                 event:
-        """
-        if self.parent.panelElegirObjeto.contribucionesEnergeticas.GetValue() != True and self.parent.panelElegirObjeto.iluminacion.GetValue() != True and self.parent.panelElegirObjeto.ventilacion.GetValue() != True and self.parent.panelElegirObjeto.ventiladores.GetValue() != True and self.parent.panelElegirObjeto.bombas.GetValue() != True and self.parent.panelElegirObjeto.torresRefrigeracion.GetValue() != True:
+        if self.parent.panelElegirObjeto.contribucionesEnergeticas != True and self.parent.panelElegirObjeto.iluminacion != True and self.parent.panelElegirObjeto.ventilacion != True and self.parent.panelElegirObjeto.ventiladores != True and self.parent.panelElegirObjeto.bombas != True and self.parent.panelElegirObjeto.torresRefrigeracion != True:
             objeto = self.parent.cogerDatosDelPanel(self.parent.panel2)
             if type(objeto) == type('hola'):
-                wx.MessageBox(_('Revise los siguientes campos:\n') + objeto, _('Aviso'))
+                raise Exception('Revise los siguientes campos:\n' + objeto)
                 return
         else:
             objeto = self.parent.panel2.cogerDatos()
             if objeto == []:
                 return
             if type(objeto) == type('hola'):
-                wx.MessageBox(_('Revise los siguientes campos:\n') + objeto, _('Aviso'))
+                raise Exception('Revise los siguientes campos:\n' + objeto)
                 return
         objeto[0] = self.quitaBlancos(objeto[0])
         Existe = False
@@ -178,7 +114,7 @@ class panelBotones(wx.Panel):
                 break
 
         if Existe == True:
-            DeseaReemplazar = dialogoConfirma.Dialog1(self, _('El elemento que desea añadir ya existe. ¿Desea Reemplazarlo?'))
+            DeseaReemplazar = dialogoConfirma.Dialog1(self, 'El elemento que desea añadir ya existe. ¿Desea Reemplazarlo?')
             DeseaReemplazar.ShowModal()
             if DeseaReemplazar.dev == True:
                 self.OnDeseaReemplazar(objeto, tipoAntiguo)
@@ -255,12 +191,6 @@ class panelBotones(wx.Panel):
         self.cargarUltimoElemento(objeto[0])
 
     def cargarUltimoElemento(self, nombre):
-        """
-        Metodo: cargarUltimoElemento
-
-        ARGUMENTOS:
-                 nombre:
-        """
         array = []
         array = self.iterchildren(self.parent.arbolInstalaciones, self.parent.arbolInstalaciones.GetRootItem(), array)
         for i in array:
@@ -269,14 +199,6 @@ class panelBotones(wx.Panel):
                 break
 
     def iterchildren(self, treectrl, node, array):
-        """
-        Metodo: iterchildren
-
-        ARGUMENTOS:
-                treectrl:
-                 node:
-                 array):   ###Funcion que me comprueba los hijos que tengo dent:
-        """
         cid, citem = treectrl.GetFirstChild(node)
         while cid.IsOk():
             array.append(cid)
@@ -287,13 +209,6 @@ class panelBotones(wx.Panel):
         return array
 
     def OnDeseaReemplazar(self, objeto, tipoAntiguo):
-        """
-        Metodo: OnDeseaReemplazar
-
-        ARGUMENTOS:
-                objeto:
-                 tipoAntiguo:
-        """
         tipoObjeto = objeto[1]
         accionesUndo = []
         datosUndo = []
@@ -577,64 +492,28 @@ class panelBotones(wx.Panel):
         self.parent.parent.parent.pilaRedo = undo.undoManaggement()
 
     def OnVistaClasicaBoton(self, event):
-        """
-        Metodo: OnVistaClasicaBoton
-
-        ARGUMENTOS:
-                event:
-        """
-        self.parent.panelRecuadro.titulo.Show(False)
-        self.parent.panelElegirObjeto.Show(False)
-        self.parent.panel2.Show(False)
-        self.vistaClasicaBoton.Show(False)
-        self.parent.vistaClasica.Show(True)
-        self.vistaNormalBoton.Show(True)
         self.parent.vistaClasica.cargaVista()
         self.parent.vistaNormal = False
-        self.anadirBoton.Show(False)
-        self.modificarBoton.Show(False)
-        self.borrarBoton.Show(False)
 
     def OnVistaNormalBoton(self, event):
-        """
-        Metodo: OnVistaNormalBoton
-
-        ARGUMENTOS:
-                event:
-        """
         self.parent.vistaNormal = True
         try:
             self.parent.OnArbolCerramientos(None)
         except:
             logging.info('Excepcion en: %s' % __name__)
 
-        self.parent.panelRecuadro.titulo.Show(True)
-        self.parent.panelElegirObjeto.Show(True)
-        self.parent.panel2.Show(True)
-        self.vistaClasicaBoton.Show(True)
-        self.parent.vistaClasica.Show(False)
-        self.vistaNormalBoton.Show(False)
-        self.anadirBoton.Show(True)
-        self.modificarBoton.Show(True)
-        self.borrarBoton.Show(True)
         return
 
     def OnmodificarBoton(self, event):
-        """
-        Metodo: OnmodificarBoton
-
-        ARGUMENTOS:
-                 event:
-        """
         try:
             item = self.parent.arbolInstalaciones.GetItemText(self.parent.arbolInstalaciones.GetSelection())
         except:
-            wx.MessageBox(_('Debe seleccionar el elemento del arbol que desea modificar.'), _('Aviso'))
+            raise Exception('Debe seleccionar el elemento del arbol que desea modificar.')
             return
 
         root = self.parent.arbolInstalaciones.GetSelection()
         if root == self.parent.arbolInstalaciones.GetRootItem():
-            wx.MessageBox(_('No se puede modificar la raíz del árbol.'), _('Aviso'))
+            raise Exception('No se puede modificar la raíz del árbol.')
             return
         accionesUndo = []
         datosUndo = []
@@ -656,10 +535,10 @@ class panelBotones(wx.Panel):
                 dlg.ShowModal()
                 return
 
-        if self.parent.panelElegirObjeto.contribucionesEnergeticas.GetValue() != True and self.parent.panelElegirObjeto.iluminacion.GetValue() != True and self.parent.panelElegirObjeto.ventilacion.GetValue() != True and self.parent.panelElegirObjeto.ventiladores.GetValue() != True and self.parent.panelElegirObjeto.bombas.GetValue() != True and self.parent.panelElegirObjeto.torresRefrigeracion.GetValue() != True:
+        if self.parent.panelElegirObjeto.contribucionesEnergeticas != True and self.parent.panelElegirObjeto.iluminacion != True and self.parent.panelElegirObjeto.ventilacion != True and self.parent.panelElegirObjeto.ventiladores != True and self.parent.panelElegirObjeto.bombas != True and self.parent.panelElegirObjeto.torresRefrigeracion != True:
             nuevo = self.parent.cogerDatosDelPanel(self.parent.panel2)
         else:
-            if self.parent.panelElegirObjeto.iluminacion.GetValue() == True:
+            if self.parent.panelElegirObjeto.iluminacion == True:
                 instalacionAnterior = ''
                 for i in range(len(self.parent.iluminacion)):
                     if item == self.parent.iluminacion[i][0]:
@@ -669,8 +548,8 @@ class panelBotones(wx.Panel):
 
             nuevo = self.parent.panel2.cogerDatos()
         if type(nuevo) == type('hola'):
-            wx.MessageBox(_('Revise los siguientes campos:\n') + nuevo, _('Aviso'))
-            if self.parent.panelElegirObjeto.iluminacion.GetValue() == True:
+            raise Exception('Revise los siguientes campos:\n' + nuevo)
+            if self.parent.panelElegirObjeto.iluminacion == True:
                 self.parent.iluminacion.append(instalacionAnterior)
             return
         compruebaNombres = 'elemento no encontrado'
@@ -853,8 +732,8 @@ class panelBotones(wx.Panel):
                     self.parent.parent.parent.pilaRedo = undo.undoManaggement()
                     return
         else:
-            wx.MessageBox(_('El nombre del elemento modificado ya existe,  indique otro'), _('Aviso'))
-            if self.parent.panelElegirObjeto.iluminacion.GetValue() == True:
+            raise Exception('El nombre del elemento modificado ya existe,  indique otro')
+            if self.parent.panelElegirObjeto.iluminacion == True:
                 self.parent.iluminacion.append(instalacionAnterior)
         self.parent.cargarArbol(self.parent.arbolInstalaciones)
         self.cargarUltimoElemento(nuevo[0])
@@ -862,12 +741,6 @@ class panelBotones(wx.Panel):
         self.parent.parent.parent.pilaRedo = undo.undoManaggement()
 
     def borrarTipoAntiguo(self, nombre):
-        """
-        Metodo: borrarTipoAntiguo
-
-        ARGUMENTOS:
-                nombre:
-        """
         datosUndo = []
         accionesUndo = []
         for inst in range(len(self.parent.ACS)):
@@ -970,12 +843,6 @@ class panelBotones(wx.Panel):
          datosUndo, accionesUndo]
 
     def compruebaNombres(self, nombre):
-        """
-        Metodo: compruebaNombres
-
-        ARGUMENTOS:
-                nombre):  #funcion para comprobar que el nombre del conjunto que estoy poniendo no exis:
-        """
         for inst in self.parent.ACS:
             if nombre == inst[0]:
                 return nombre
@@ -1027,25 +894,19 @@ class panelBotones(wx.Panel):
         return 'elemento no encontrado'
 
     def OnBorrarBotonButton(self, event):
-        """
-        Metodo: OnBorrarBotonButton
-
-        ARGUMENTOS:
-                 event:
-        """
         try:
             item = self.parent.arbolInstalaciones.GetItemText(self.parent.arbolInstalaciones.GetSelection())
         except:
-            wx.MessageBox(_('Debe seleccionar el elemento del árbol que desea eliminar.'), _('Aviso'))
+            raise Exception('Debe seleccionar el elemento del árbol que desea eliminar.')
             return
 
         root = self.parent.arbolInstalaciones.GetSelection()
         if root == self.parent.arbolInstalaciones.GetRootItem():
-            wx.MessageBox(_('No se puede borrar la raíz del árbol.'), _('Aviso'))
+            raise Exception('No se puede borrar la raíz del árbol.')
             return
         accionesUndo = []
         datosUndo = []
-        borrar = dialogoConfirma.Dialog1(self, _('¿Desea borrar el elemento "') + item + '"?')
+        borrar = dialogoConfirma.Dialog1(self, '¿Desea borrar el elemento "' + item + '"?')
         borrar.ShowModal()
         if borrar.dev == False:
             return
@@ -1054,9 +915,9 @@ class panelBotones(wx.Panel):
             textoSelect = self.parent.arbolInstalaciones.GetItemText(seleccion)
             boolExistenInstColgandoDeZonaEliminadaEnConjuntosMM = existenInstalacionesColgandoDeZonaModificadaOEliminadaEnConjuntosMM(listadoConjuntosMM=self.parent.parent.parent.listadoConjuntosMMUsuario, subgrupoModifOElim=textoSelect)
             if boolExistenInstColgandoDeZonaEliminadaEnConjuntosMM == True:
-                mensaje = _('Si borra este elemento se perderán todos sus componentes. Además, se eliminarán las instalaciones de los conjuntos de medidas de mejora que cuelguen de dicho elemento y deberán ser revisadas. ¿Desea continuar?')
+                mensaje = 'Si borra este elemento se perderán todos sus componentes. Además, se eliminarán las instalaciones de los conjuntos de medidas de mejora que cuelguen de dicho elemento y deberán ser revisadas. ¿Desea continuar?'
             else:
-                mensaje = _('Si borra este elemento se perderán todos sus componentes. ¿Desea continuar?')
+                mensaje = 'Si borra este elemento se perderán todos sus componentes. ¿Desea continuar?'
             borraTodo = dialogoConfirma.Dialog1(self, mensaje, size=(600, 125))
             borraTodo.ShowModal()
             if borraTodo.dev == True:
@@ -1158,16 +1019,11 @@ class panelBotones(wx.Panel):
         self.parent.cargarArbol(self.parent.arbolInstalaciones)
 
     def borraGrupo(self):
-        """
-        Metodo: borraGrupo
-
-            self):   ###Solo para los subgrupos pq son los que tiene hij:
-        """
         seleccion = self.parent.arbolInstalaciones.GetSelection()
         textoSelect = self.parent.arbolInstalaciones.GetItemText(seleccion)
         for i in range(len(self.parent.parent.subgrupos)):
             if self.parent.parent.subgrupos[i].raiz == textoSelect:
-                wx.MessageBox(_('No puede borrar una zona con más subzonas dentro'), _('Aviso'))
+                raise Exception('No puede borrar una zona con más subzonas dentro')
                 return
 
         pertenece = False
@@ -1179,7 +1035,7 @@ class panelBotones(wx.Panel):
         accionesUndo = []
         datosUndo = []
         if pertenece == True:
-            DeseaEliminar = dialogoConfirma.Dialog1(self, _('La zona que desea borrar tiene cerramientos asociadas. ¿Desea borrar también estos cerramientos?'))
+            DeseaEliminar = dialogoConfirma.Dialog1(self, 'La zona que desea borrar tiene cerramientos asociadas. ¿Desea borrar también estos cerramientos?')
             DeseaEliminar.ShowModal()
             if DeseaEliminar.dev == True:
                 cambios = self.parent.parent.parent.panelEnvolvente.panelBotones.BorrarSubgrupoEnvolvente(textoSelect)
@@ -1203,15 +1059,6 @@ class panelBotones(wx.Panel):
         self.BorrarSubgrupoInstalaciones(zonaEliminada=zonaEliminada)
 
     def BorrarSubgrupoInstalaciones(self, zonaEliminada):
-        """
-        Metodo: BorrarSubgrupoInstalaciones
-
-        ARGUMENTOS:
-                zonaEliminada:
-        
-        Elimina instalaciones de zona y lo mete en Undo
-        Manda a que se eliminen las instalaciones de la zona de los conjuntos de medidas de mejora
-        """
         accionesUndo = []
         datosUndo = []
         bol = False
@@ -1303,9 +1150,9 @@ class panelBotones(wx.Panel):
                     break
 
         if self.parent.parent.parent.programa == 'GranTerciario':
-            self.parent.iluminacion = calculoSuperficies.actualizarSuperficiesIluminacion(self.parent.parent.subgrupos, self.parent.parent.parent.panelDatosGenerales.superficie.GetValue(), self.parent.parent.parent.panelInstalaciones.iluminacion)
+            self.parent.iluminacion = calculoSuperficies.actualizarSuperficiesIluminacion(self.parent.parent.subgrupos, self.parent.parent.parent.panelDatosGenerales.superficie, self.parent.parent.parent.panelInstalaciones.iluminacion)
             try:
-                if self.parent.parent.parent.panelInstalaciones.panelElegirObjeto.iluminacion.GetValue() == True:
+                if self.parent.parent.parent.panelInstalaciones.panelElegirObjeto.iluminacion == True:
                     self.parent.parent.parent.panelInstalaciones.panel2.onSeleccionarSubgrupo(None)
             except:
                 logging.info('Excepcion en: %s' % __name__)
@@ -1358,12 +1205,8 @@ class panelBotones(wx.Panel):
         return [datosUndo, accionesUndo]
 
     def BorrarInstalacionesDelSubgrupoEnConjuntosMM(self, zonaEliminada, programa):
-        """
-        Metodo: BorrarInstalacionesDelSubgrupoEnConjuntosMM
-        Cuando se borra un subgrupo, si hay conjuntos mm con mm de instalaciones cuyas intalaciones cuelgan del subgrupo borrado, hay que borrarlas
-        """
         boolExistenInstColgandoDeZonaEliminadaEnConjuntosMM = existenInstalacionesColgandoDeZonaModificadaOEliminadaEnConjuntosMM(listadoConjuntosMM=self.parent.parent.parent.listadoConjuntosMMUsuario, subgrupoModifOElim=zonaEliminada.nombre)
         if boolExistenInstColgandoDeZonaEliminadaEnConjuntosMM == True:
             self.parent.parent.parent.listadoConjuntosMMUsuario = eliminarSubgrupoDeConjuntosMM(listadoConjuntosMM=self.parent.parent.parent.listadoConjuntosMMUsuario, subgrupoEliminado=zonaEliminada.nombre)
             if programa == 'GranTerciario':
-                self.parent.parent.parent.listadoConjuntosMMUsuario = actualizarSuperficieIluminacionDeConjuntosMM(listadoConjuntosMM=self.parent.parent.parent.listadoConjuntosMMUsuario, listadoSubgrupos=self.parent.parent.subgrupos, superficieHabitable=self.parent.parent.parent.panelDatosGenerales.superficie.GetValue())
+                self.parent.parent.parent.listadoConjuntosMMUsuario = actualizarSuperficieIluminacionDeConjuntosMM(listadoConjuntosMM=self.parent.parent.parent.listadoConjuntosMMUsuario, listadoSubgrupos=self.parent.parent.subgrupos, superficieHabitable=self.parent.parent.parent.panelDatosGenerales.superficie)

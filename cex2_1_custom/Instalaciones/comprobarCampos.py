@@ -3,29 +3,10 @@
 # Decompiled from: Python 3.10.9 | packaged by Anaconda, Inc. | (main, Mar  8 2023, 10:42:25) [MSC v.1916 64 bit (AMD64)]
 # Embedded file name: Instalaciones\comprobarCampos.pyc
 # Compiled at: 2014-02-18 15:21:02
-"""
-Modulo: comprobarCampos.py
-
-"""
 
 class Comprueba:
-    """
-    Clase: Comprueba del modulo comprobarCampos.py
-
-    """
 
     def __init__(self, dato, tipoObjeto, listaErrores, msgError, valorMin=None, valorMax=None):
-        """
-        Constructor de la clase
-
-        ARGUMENTOS:
-                dato:
-                tipoObjeto:
-                listaErrores:
-                msgError:
-                valorMin=None:
-                valorMax=None:
-        """
         self.dato = dato
         self.tipoObjeto = tipoObjeto
         self.listaErrores = listaErrores
@@ -35,10 +16,6 @@ class Comprueba:
         self.ErrorDevuelto = self.realizaComprobacion()
 
     def realizaComprobacion(self):
-        """
-        Metodo: realizaComprobacion
-
-        """
         if self.tipoObjeto == 0 or self.tipoObjeto == 1:
             if self.dato == '':
                 if self.listaErrores != '':
@@ -82,30 +59,11 @@ class Comprueba:
 
 
 class Comprueba2(Comprueba):
-    """
-    Clase: Comprueba2 del modulo comprobarCampos.py
-
-    """
 
     def __init__(self, dato, tipoObjeto, listaErrores, msgError, valorMin=None, valorMax=None):
-        """
-        Constructor de la clase
-
-        ARGUMENTOS:
-                dato:
-                tipoObjeto:
-                listaErrores:
-                msgError:
-                valorMin=None:
-                valorMax=None:
-        """
         Comprueba.__init__(self, dato, tipoObjeto, listaErrores, msgError, valorMin, valorMax)
 
     def realizaComprobacion(self):
-        """
-        Metodo: realizaComprobacion
-
-        """
         if self.tipoObjeto == 0 or self.tipoObjeto == 1:
             if self.dato == '':
                 if self.listaErrores != '':
@@ -149,23 +107,8 @@ class Comprueba2(Comprueba):
 
 
 class Comprueba3:
-    """
-    Clase: Comprueba del modulo comprobarCampos.py
-
-    """
 
     def __init__(self, dato, tipoObjeto, listaErrores, msgError, valorMin=None, valorMax=None):
-        """
-        Constructor de la clase
-
-        ARGUMENTOS:
-                dato:
-                tipoObjeto:
-                listaErrores:
-                msgError:
-                valorMin=None:
-                valorMax=None:
-        """
         self.dato = dato
         self.tipoObjeto = tipoObjeto
         self.listaErrores = listaErrores
@@ -175,10 +118,6 @@ class Comprueba3:
         self.ErrorDevuelto = self.realizaComprobacion()
 
     def realizaComprobacion(self):
-        """
-        Metodo: realizaComprobacion
-
-        """
         if self.tipoObjeto == 0 or self.tipoObjeto == 1:
             if self.dato == '':
                 return '- %s\n' % self.msgError

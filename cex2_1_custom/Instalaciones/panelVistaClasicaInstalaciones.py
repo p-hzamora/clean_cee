@@ -1,308 +1,147 @@
 # Embedded file name: Instalaciones\panelVistaClasicaInstalaciones.pyc
-"""
-Modulo: panelVistaClasicaInstalaciones.py
-
-"""
 from Calculos.listadosWeb import listadoCombustibles, getTraduccion, tablaZona1, tablaZona2, listadoInstalaciones, listadoOpcionesInstalacionesTerciario, listadoInstalacionesElectrico, listadoInstalacionesClimatizacion, listadoOpcionesConsumoBombasOVentiladores, getPosicionKeyEnListado, listadoOpcionesVentiladores, listadoOpcionesBombas, listadoOpcionesTorreDeRefrigeracion, listadoOpcionesServicioVentiladores, listadoOpcionesServicioBombas, listadoOpcionesConsumoBombasOVentiladoresCaudalVariable
 from Instalaciones.comprobarCampos import Comprueba, Comprueba2
 from miChoiceGrid import MiChoiceGrid
 from miGrid import MyGrid
 import Instalaciones.dialogoConfirma as dialogoConfirma
-import wx
 import logging
-wxID_PANEL1LISTCTRL1, wxID_WXPANEL2LISTCTRL1, wxID_WXPANEL2LISTHUECOS, wxID_PANEL1GRID1, wxID_PANEL1GRID2, wxID_PANEL1GRID3, wxID_PANEL1GRID4, wxID_PANEL1GRID5, wxID_PANEL1GRID8, wxID_PANEL1GRID7, wxID_PANEL1GRID6, wxID_PANEL1DEFINIRACS, wxID_PANEL1DEFINIRCALEFACCION, wxID_PANEL1DEFINIRREFRIGERACION, wxID_PANEL1CONTRIBUCIONES, wxID_PANEL1ILUMINACIONES, wxID_PANEL1VENTILACION, wxID_PANEL1GTRADIO, wxID_PANEL1ANADIRBOTON, wxID_PANEL1DEFINIR, wxID_WXPANEL1STATICLINE = [ wx.NewId() for _init_ctrls in range(21) ]
 
 class Panel1(wx.Panel):
-    """
-    Clase: Panel1 del modulo panelVistaClasicaInstalaciones.py
-    
-    
-    """
 
     def _init_ctrls(self, prnt, id, posi, siz, styles, named):
-        """
-        Metodo: _init_ctrls
-        
-        
-        ARGUMENTOS:
-                prnt:
-                id:
-                posi:
-                siz:
-                styles:
-                named:
-        """
-        wx.Panel.__init__(self, id=id, name=named, parent=prnt, pos=posi, size=siz, style=styles)
-        self.SetBackgroundColour('white')
-        self.defiirText = wx.StaticText(id=wxID_PANEL1DEFINIR, label=_(u'Instalaciones del edificio'), name='defiirText', parent=self, pos=wx.Point(0, 0), size=wx.Size(222, 18), style=0)
-        self.defiirText.SetFont(wx.Font(12, wx.SWISS, wx.NORMAL, wx.BOLD, False, u''))
-        self.defiirText.SetForegroundColour(wx.Colour(0, 64, 128))
-        self.definirACS = wx.RadioButton(id=wxID_PANEL1DEFINIRACS, label=_(u'Equipos de ACS'), name=u'definirACS', parent=self, pos=wx.Point(20, 30), size=wx.Size(100, 13), style=wx.RB_GROUP)
-        self.definirACS.SetValue(True)
-        self.definirACS.Bind(wx.EVT_RADIOBUTTON, self.onACSRadio, id=wxID_PANEL1DEFINIRACS)
-        self.definirCalefaccion = wx.RadioButton(id=wxID_PANEL1DEFINIRCALEFACCION, label=_(u'Equipos de calefacci\xf3n'), name=u'definirCalefaccion', parent=self, pos=wx.Point(20, 70), size=wx.Size(200, 13), style=0)
-        self.definirCalefaccion.Bind(wx.EVT_RADIOBUTTON, self.onCalefaccionRadio, id=wxID_PANEL1DEFINIRCALEFACCION)
-        self.definirRefrigeracion = wx.RadioButton(id=wxID_PANEL1DEFINIRREFRIGERACION, label=_(u'Equipos de refrigeraci\xf3n'), name=u'definirRefrigeracion', parent=self, pos=wx.Point(20, 110), size=wx.Size(200, 13), style=0)
-        self.definirRefrigeracion.Bind(wx.EVT_RADIOBUTTON, self.onRefrigeracionRadio, id=wxID_PANEL1DEFINIRREFRIGERACION)
-        self.contribucionesEnergeticas = wx.RadioButton(id=wxID_PANEL1CONTRIBUCIONES, label=_(u'Contribuciones energ\xe9ticas'), name=u'contribucionesEnergeticas', parent=self, pos=wx.Point(20, 150), size=wx.Size(250, 13), style=0)
-        self.contribucionesEnergeticas.Bind(wx.EVT_RADIOBUTTON, self.onRenobablesRadio, id=wxID_PANEL1CONTRIBUCIONES)
-        self.definirIluminacion = wx.RadioButton(id=wxID_PANEL1ILUMINACIONES, label=_(u'Equipos de iluminaci\xf3n'), name=u'iluminacion', parent=self, pos=wx.Point(350, 30), size=wx.Size(250, 13), style=0)
-        self.definirIluminacion.Bind(wx.EVT_RADIOBUTTON, self.onIluminacionRadio, id=wxID_PANEL1ILUMINACIONES)
-        self.definirIluminacion.Show(False)
-        self.definirVentilacion = wx.RadioButton(id=wxID_PANEL1VENTILACION, label=_(u'Equipos de aire primario'), name=u'ventilacion', parent=self, pos=wx.Point(350, 70), size=wx.Size(250, 13), style=0)
-        self.definirVentilacion.Bind(wx.EVT_RADIOBUTTON, self.onVentilacionRadio, id=wxID_PANEL1VENTILACION)
-        self.definirVentilacion.Show(False)
-        self.definirEquposGT = wx.RadioButton(id=wxID_PANEL1GTRADIO, label=_(u'Equipos espec\xedficos de gran terciario'), name=u'ventilacion', parent=self, pos=wx.Point(350, 110), size=wx.Size(250, 13), style=0)
-        self.definirEquposGT.Bind(wx.EVT_RADIOBUTTON, self.onEquiposGTRadio, id=wxID_PANEL1GTRADIO)
-        self.definirEquposGT.Show(False)
+        self.definirACS = False # or True, era un CheckBox que debia elegir el usuario
+        self.definirACS= True
+        self.definirCalefaccion = False # or True, era un CheckBox que debia elegir el usuario
+        self.definirRefrigeracion = False # or True, era un CheckBox que debia elegir el usuario
+        self.contribucionesEnergeticas = False # or True, era un CheckBox que debia elegir el usuario
+        self.definirIluminacion = False # or True, era un CheckBox que debia elegir el usuario
+        self.definirVentilacion = False # or True, era un CheckBox que debia elegir el usuario
+        self.definirEquposGT = False # or True, era un CheckBox que debia elegir el usuario
         self.listaACS = MyGrid(id=wxID_PANEL1GRID6, parent=self, pos=wx.Point(0, 232), size=wx.Size(710, 308), style=wx.RAISED_BORDER)
-        self.listaACS.Bind(wx.grid.EVT_GRID_CELL_CHANGE, self.onListaACS, id=wxID_PANEL1GRID6)
         self._init_coll_listaACS_Columns(self.listaACS)
         self.listaCalefaccion = MyGrid(id=wxID_PANEL1GRID7, parent=self, pos=wx.Point(0, 232), size=wx.Size(710, 308), style=wx.RAISED_BORDER)
-        self.listaCalefaccion.Bind(wx.grid.EVT_GRID_CELL_CHANGE, self.onListaCalefaccion, id=wxID_PANEL1GRID7)
         self._init_coll_listaCalefaccion_Columns(self.listaCalefaccion)
         self.listaRefrigeracion = MyGrid(id=wxID_PANEL1GRID8, parent=self, pos=wx.Point(0, 232), size=wx.Size(710, 308), style=wx.RAISED_BORDER)
-        self.listaRefrigeracion.Bind(wx.grid.EVT_GRID_CELL_CHANGE, self.onListaRefrigeracion, id=wxID_PANEL1GRID8)
         self._init_coll_listaRefrigeracion_Columns(self.listaRefrigeracion)
         self.listaIluminacion = MyGrid(id=wxID_PANEL1GRID1, parent=self, pos=wx.Point(0, 232), size=wx.Size(710, 308), style=wx.RAISED_BORDER)
-        self.listaIluminacion.Bind(wx.grid.EVT_GRID_CELL_CHANGE, self.onListaIluminacion, id=wxID_PANEL1GRID1)
         self._init_coll_listaIluminacion_Columns(self.listaIluminacion)
         self.listaAirePrimario = MyGrid(id=wxID_PANEL1GRID2, parent=self, pos=wx.Point(0, 232), size=wx.Size(710, 308), style=wx.RAISED_BORDER)
-        self.listaAirePrimario.Bind(wx.grid.EVT_GRID_CELL_CHANGE, self.onListaAirePrimario, id=wxID_PANEL1GRID2)
         self._init_coll_listaAirePrimario_Columns(self.listaAirePrimario)
         self.listaGT = MyGrid(id=wxID_PANEL1GRID3, parent=self, pos=wx.Point(0, 232), size=wx.Size(710, 308), style=wx.RAISED_BORDER)
-        self.listaGT.Bind(wx.grid.EVT_GRID_CELL_CHANGE, self.onListaGT, id=wxID_PANEL1GRID3)
         self._init_coll_listaGT_Columns(self.listaGT)
         self.listaRenovables = MyGrid(id=wxID_PANEL1GRID5, parent=self, pos=wx.Point(0, 232), size=wx.Size(710, 308), style=wx.RAISED_BORDER)
-        self.listaRenovables.Bind(wx.grid.EVT_GRID_CELL_CHANGE, self.onListaRenovables, id=wxID_PANEL1GRID5)
         self._init_coll_listaRenovables_Columns(self.listaRenovables)
         self.staticLine = wx.StaticLine(id=wxID_WXPANEL1STATICLINE, name='staticLine', parent=self, pos=wx.Point(0, 202), size=wx.Size(710, 3), style=0)
-        self.staticLine.SetBackgroundColour(wx.Colour(0, 64, 128))
-        self.guardarBoton = wx.Button(id=wxID_PANEL1ANADIRBOTON, label=_(u'Guardar cambios'), name=u'anadirBoton', parent=self, pos=wx.Point(610, 555), size=wx.Size(100, 23), style=0)
-        self.guardarBoton.Bind(wx.EVT_BUTTON, self.onGuardarBoton, id=wxID_PANEL1ANADIRBOTON)
         self.listaACS.AutoSizeColumns()
-        self.listaACS.Show(True)
         self.listaCalefaccion.AutoSizeColumns()
-        self.listaCalefaccion.Show(False)
         self.listaRefrigeracion.AutoSizeColumns()
-        self.listaRefrigeracion.Show(False)
         self.listaIluminacion.AutoSizeColumns()
-        self.listaIluminacion.Show(False)
         self.listaAirePrimario.AutoSizeColumns()
-        self.listaAirePrimario.Show(False)
         self.listaGT.AutoSizeColumns()
-        self.listaGT.Show(False)
         self.listaRenovables.AutoSizeColumns()
-        self.listaRenovables.Show(False)
         self.listaActual = 'ACS'
 
     def onACSRadio(self, event):
-        """
-        Metodo: onACSRadio
-        
-        
-        ARGUMENTOS:
-                event:
-        """
         self.seleccionCorrecta('ACS', '')
 
     def onCalefaccionRadio(self, event):
-        """
-        Metodo: onCalefaccionRadio
-        
-        
-        ARGUMENTOS:
-                event:
-        """
         self.seleccionCorrecta('calefaccion', '')
 
     def onRefrigeracionRadio(self, event):
-        """
-        Metodo: onRefrigeracionRadio
-        
-        
-        ARGUMENTOS:
-                event:
-        """
         self.seleccionCorrecta('refrigeracion', '')
 
     def onRenobablesRadio(self, event):
-        """
-        Metodo: onRenobablesRadio
-        
-        
-        ARGUMENTOS:
-                event:
-        """
         self.seleccionCorrecta('renovables', '')
 
     def onIluminacionRadio(self, event):
-        """
-        Metodo: onIluminacionRadio
-        
-        
-        ARGUMENTOS:
-                event:
-        """
         self.seleccionCorrecta('iluminacion', '')
 
     def onVentilacionRadio(self, event):
-        """
-        Metodo: onVentilacionRadio
-        
-        
-        ARGUMENTOS:
-                event:
-        """
         self.seleccionCorrecta('ventilacion', '')
 
     def onEquiposGTRadio(self, event):
-        """
-        Metodo: onEquiposGTRadio
-        
-        
-        ARGUMENTOS:
-                event:
-        """
         self.seleccionCorrecta('GT', '')
 
     def _init_coll_listaRenovables_Columns(self, parent):
-        """
-        Metodo: _init_coll_listaRenovables_Columns
-        
-        
-        ARGUMENTOS:
-                parent:
-        """
         parent.CreateGrid(0, 11)
-        parent.SetColLabelValue(0, _(u'Nombre'))
-        parent.SetColLabelValue(1, _(u'Zona'))
-        parent.SetColLabelValue(2, _(u'% demanda ACS\ncubierto con renovables'))
-        parent.SetColLabelValue(3, _(u'% calefacci\xf3n\ncubierto con renovables'))
-        parent.SetColLabelValue(4, _(u'% refrigeraci\xf3n\ncubierto con renovables'))
-        parent.SetColLabelValue(5, _(u'Energ\xeda el\xe9ctrica generada con\nrenovables/cogeneraci\xf3n (kwh/a\xf1o)'))
-        parent.SetColLabelValue(6, _(u'Calor recuperado para\nACS (kwh/a\xf1o)'))
-        parent.SetColLabelValue(7, _(u'Calor recuperado para\ncalefacci\xf3n (kwh/a\xf1o)'))
-        parent.SetColLabelValue(8, _(u'Fr\xedo recuperado\n(kwh/a\xf1o)'))
-        parent.SetColLabelValue(9, _(u'Energ\xeda consumida en\ngeneraci\xf3n de electricidad (kwh/a\xf1o)'))
-        parent.SetColLabelValue(10, _(u'Combustible'))
+        parent.SetColLabelValue(0, 'Nombre')
+        parent.SetColLabelValue(1, 'Zona')
+        parent.SetColLabelValue(2, '% demanda ACS\ncubierto con renovables')
+        parent.SetColLabelValue(3, '% calefacci\xf3n\ncubierto con renovables')
+        parent.SetColLabelValue(4, '% refrigeraci\xf3n\ncubierto con renovables')
+        parent.SetColLabelValue(5, 'Energ\xeda el\xe9ctrica generada con\nrenovables/cogeneraci\xf3n (kwh/a\xf1o)')
+        parent.SetColLabelValue(6, 'Calor recuperado para\nACS (kwh/a\xf1o)')
+        parent.SetColLabelValue(7, 'Calor recuperado para\ncalefacci\xf3n (kwh/a\xf1o)')
+        parent.SetColLabelValue(8, 'Fr\xedo recuperado\n(kwh/a\xf1o)')
+        parent.SetColLabelValue(9, 'Energ\xeda consumida en\ngeneraci\xf3n de electricidad (kwh/a\xf1o)')
+        parent.SetColLabelValue(10, 'Combustible')
 
     def _init_coll_listaIluminacion_Columns(self, parent):
-        """
-        Metodo: _init_coll_listaIluminacion_Columns
-        
-        
-        ARGUMENTOS:
-                parent:
-        """
         parent.CreateGrid(0, 8)
-        parent.SetColLabelValue(0, _(u'Nombre'))
-        parent.SetColLabelValue(1, _(u'Zona'))
-        parent.SetColLabelValue(2, _(u'Superficie\n(m2)'))
-        parent.SetColLabelValue(3, _(u'Zona\nrepresentaci\xf3n'))
-        parent.SetColLabelValue(4, _(u'Actividad'))
-        parent.SetColLabelValue(5, _(u'Modo definici\xf3n'))
-        parent.SetColLabelValue(6, _(u'Potencia\n(W)'))
-        parent.SetColLabelValue(7, _(u'Iluminancia\n(lux)'))
+        parent.SetColLabelValue(0, 'Nombre')
+        parent.SetColLabelValue(1, 'Zona')
+        parent.SetColLabelValue(2, 'Superficie\n(m2)')
+        parent.SetColLabelValue(3, 'Zona\nrepresentaci\xf3n')
+        parent.SetColLabelValue(4, 'Actividad')
+        parent.SetColLabelValue(5, 'Modo definici\xf3n')
+        parent.SetColLabelValue(6, 'Potencia\n(W)')
+        parent.SetColLabelValue(7, 'Iluminancia\n(lux)')
 
     def _init_coll_listaAirePrimario_Columns(self, parent):
-        """
-        Metodo: _init_coll_listaAirePrimario_Columns
-        
-        
-        ARGUMENTOS:
-                parent:
-        """
         parent.CreateGrid(0, 5)
-        parent.SetColLabelValue(0, _(u'Nombre'))
-        parent.SetColLabelValue(1, _(u'Zona'))
-        parent.SetColLabelValue(2, _(u'Caudal de ventilaci\xf3n (m3/h)'))
-        parent.SetColLabelValue(3, _(u'Recuperaci\xf3n de calor'))
-        parent.SetColLabelValue(4, _(u'Rendimiento del recuperador (%)'))
+        parent.SetColLabelValue(0, 'Nombre')
+        parent.SetColLabelValue(1, 'Zona')
+        parent.SetColLabelValue(2, 'Caudal de ventilaci\xf3n (m3/h)')
+        parent.SetColLabelValue(3, 'Recuperaci\xf3n de calor')
+        parent.SetColLabelValue(4, 'Rendimiento del recuperador (%)')
 
     def _init_coll_listaGT_Columns(self, parent):
-        """
-        Metodo: _init_coll_listaAirePrimario_Columns
-        
-        
-        ARGUMENTOS:
-                parent:
-        """
         parent.CreateGrid(0, 6)
-        parent.SetColLabelValue(0, _(u'Nombre'))
-        parent.SetColLabelValue(1, _(u'Zona'))
-        parent.SetColLabelValue(2, _(u'Tipo de equipo'))
-        parent.SetColLabelValue(3, _(u'Servicio'))
-        parent.SetColLabelValue(4, _(u'Modo definici\xf3n'))
-        parent.SetColLabelValue(5, _(u'Consumo anual (kWh)'))
+        parent.SetColLabelValue(0, 'Nombre')
+        parent.SetColLabelValue(1, 'Zona')
+        parent.SetColLabelValue(2, 'Tipo de equipo')
+        parent.SetColLabelValue(3, 'Servicio')
+        parent.SetColLabelValue(4, 'Modo definici\xf3n')
+        parent.SetColLabelValue(5, 'Consumo anual (kWh)')
 
     def _init_coll_listaACS_Columns(self, parent):
-        """
-        Metodo: _init_coll_listaACS_Columns
-        
-        
-        ARGUMENTOS:
-                parent:
-        """
         parent.CreateGrid(0, 10)
-        parent.SetColLabelValue(0, _(u'Nombre'))
-        parent.SetColLabelValue(1, _(u'Tipo de equipo'))
-        parent.SetColLabelValue(2, _(u'Modo definici\xf3n'))
-        parent.SetColLabelValue(3, _(u'Tipo generador'))
-        parent.SetColLabelValue(4, _(u'Combustible'))
-        parent.SetColLabelValue(5, _(u'Rendimiento\nestacional (%)'))
-        parent.SetColLabelValue(6, _(u'm2 cubiertos'))
-        parent.SetColLabelValue(7, _(u'Demanda\ncubierta (%)'))
-        parent.SetColLabelValue(8, _(u'Zona'))
-        parent.SetColLabelValue(9, _(u'Acumulaci\xf3n'))
+        parent.SetColLabelValue(0, 'Nombre')
+        parent.SetColLabelValue(1, 'Tipo de equipo')
+        parent.SetColLabelValue(2, 'Modo definici\xf3n')
+        parent.SetColLabelValue(3, 'Tipo generador')
+        parent.SetColLabelValue(4, 'Combustible')
+        parent.SetColLabelValue(5, 'Rendimiento\nestacional (%)')
+        parent.SetColLabelValue(6, 'm2 cubiertos')
+        parent.SetColLabelValue(7, 'Demanda\ncubierta (%)')
+        parent.SetColLabelValue(8, 'Zona')
+        parent.SetColLabelValue(9, 'Acumulaci\xf3n')
 
     def _init_coll_listaCalefaccion_Columns(self, parent):
-        """
-        Metodo: _init_coll_listaCalefaccion_Columns
-        
-        
-        ARGUMENTOS:
-                parent:
-        """
         parent.CreateGrid(0, 9)
-        parent.SetColLabelValue(0, _(u'Nombre'))
-        parent.SetColLabelValue(1, _(u'Tipo de equipo'))
-        parent.SetColLabelValue(2, _(u'Modo definici\xf3n'))
-        parent.SetColLabelValue(3, _(u'Tipo generador'))
-        parent.SetColLabelValue(4, _(u'Combustible'))
-        parent.SetColLabelValue(5, _(u'Rendimiento\nestacional (%)'))
-        parent.SetColLabelValue(6, _(u'm2 cubiertos'))
-        parent.SetColLabelValue(7, _(u'Demanda\ncubierta (%)'))
-        parent.SetColLabelValue(8, _(u'Zona'))
+        parent.SetColLabelValue(0, 'Nombre')
+        parent.SetColLabelValue(1, 'Tipo de equipo')
+        parent.SetColLabelValue(2, 'Modo definici\xf3n')
+        parent.SetColLabelValue(3, 'Tipo generador')
+        parent.SetColLabelValue(4, 'Combustible')
+        parent.SetColLabelValue(5, 'Rendimiento\nestacional (%)')
+        parent.SetColLabelValue(6, 'm2 cubiertos')
+        parent.SetColLabelValue(7, 'Demanda\ncubierta (%)')
+        parent.SetColLabelValue(8, 'Zona')
 
     def _init_coll_listaRefrigeracion_Columns(self, parent):
-        """
-        Metodo: _init_coll_listaRefrigeracion_Columns
-        
-        
-        ARGUMENTOS:
-                parent:
-        """
         parent.CreateGrid(0, 9)
-        parent.SetColLabelValue(0, _(u'Nombre'))
-        parent.SetColLabelValue(1, _(u'Tipo de equipo'))
-        parent.SetColLabelValue(2, _(u'Modo definici\xf3n'))
-        parent.SetColLabelValue(3, _(u'Tipo generador'))
-        parent.SetColLabelValue(4, _(u'Combustible'))
-        parent.SetColLabelValue(5, _(u'Rendimiento\nestacional (%)'))
-        parent.SetColLabelValue(6, _(u'm2 cubiertos'))
-        parent.SetColLabelValue(7, _(u'Demanda\ncubierta (%)'))
-        parent.SetColLabelValue(8, _(u'Zona'))
+        parent.SetColLabelValue(0, 'Nombre')
+        parent.SetColLabelValue(1, 'Tipo de equipo')
+        parent.SetColLabelValue(2, 'Modo definici\xf3n')
+        parent.SetColLabelValue(3, 'Tipo generador')
+        parent.SetColLabelValue(4, 'Combustible')
+        parent.SetColLabelValue(5, 'Rendimiento\nestacional (%)')
+        parent.SetColLabelValue(6, 'm2 cubiertos')
+        parent.SetColLabelValue(7, 'Demanda\ncubierta (%)')
+        parent.SetColLabelValue(8, 'Zona')
 
     def seleccionCorrecta(self, tabla, item):
-        """
-        Metodo: seleccionCorrecta
-        
-        
-        ARGUMENTOS:
-                tabla:
-                item:
-        """
         if self.cambios == True:
             if self.confirmacionUsuario():
                 if self.realizaCambios() == False:
@@ -311,13 +150,6 @@ class Panel1(wx.Panel):
             else:
                 self.cargaVista()
         if tabla == 'ACS':
-            self.listaACS.Show(True)
-            self.listaCalefaccion.Show(False)
-            self.listaRefrigeracion.Show(False)
-            self.listaIluminacion.Show(False)
-            self.listaAirePrimario.Show(False)
-            self.listaGT.Show(False)
-            self.listaRenovables.Show(False)
             self.listaActual = 'ACS'
             for i in range(self.listaACS.GetNumberRows()):
                 if item == self.listaACS.GetCellValue(i, 0):
@@ -325,13 +157,6 @@ class Panel1(wx.Panel):
                     return
 
         elif tabla == 'calefaccion':
-            self.listaACS.Show(False)
-            self.listaCalefaccion.Show(True)
-            self.listaRefrigeracion.Show(False)
-            self.listaIluminacion.Show(False)
-            self.listaAirePrimario.Show(False)
-            self.listaGT.Show(False)
-            self.listaRenovables.Show(False)
             self.listaActual = 'calefaccion'
             for i in range(self.listaCalefaccion.GetNumberRows()):
                 if item == self.listaCalefaccion.GetCellValue(i, 0):
@@ -339,13 +164,6 @@ class Panel1(wx.Panel):
                     return
 
         elif tabla == 'refrigeracion':
-            self.listaACS.Show(False)
-            self.listaCalefaccion.Show(False)
-            self.listaRefrigeracion.Show(True)
-            self.listaIluminacion.Show(False)
-            self.listaAirePrimario.Show(False)
-            self.listaGT.Show(False)
-            self.listaRenovables.Show(False)
             self.listaActual = 'refrigeracion'
             for i in range(self.listaRefrigeracion.GetNumberRows()):
                 if item == self.listaRefrigeracion.GetCellValue(i, 0):
@@ -353,13 +171,6 @@ class Panel1(wx.Panel):
                     return
 
         elif tabla == 'iluminacion':
-            self.listaACS.Show(False)
-            self.listaCalefaccion.Show(False)
-            self.listaRefrigeracion.Show(False)
-            self.listaIluminacion.Show(True)
-            self.listaAirePrimario.Show(False)
-            self.listaGT.Show(False)
-            self.listaRenovables.Show(False)
             self.listaActual = 'iluminacion'
             for i in range(self.listaIluminacion.GetNumberRows()):
                 if item == self.listaIluminacion.GetCellValue(i, 0):
@@ -367,13 +178,6 @@ class Panel1(wx.Panel):
                     return
 
         elif tabla == 'ventilacion':
-            self.listaACS.Show(False)
-            self.listaCalefaccion.Show(False)
-            self.listaRefrigeracion.Show(False)
-            self.listaIluminacion.Show(False)
-            self.listaAirePrimario.Show(True)
-            self.listaGT.Show(False)
-            self.listaRenovables.Show(False)
             self.listaActual = 'ventilacion'
             for i in range(self.listaAirePrimario.GetNumberRows()):
                 if item == self.listaAirePrimario.GetCellValue(i, 0):
@@ -381,13 +185,6 @@ class Panel1(wx.Panel):
                     return
 
         elif tabla == 'GT':
-            self.listaACS.Show(False)
-            self.listaCalefaccion.Show(False)
-            self.listaRefrigeracion.Show(False)
-            self.listaIluminacion.Show(False)
-            self.listaAirePrimario.Show(False)
-            self.listaGT.Show(True)
-            self.listaRenovables.Show(False)
             self.listaActual = 'GT'
             for i in range(self.listaGT.GetNumberRows()):
                 if item == self.listaGT.GetCellValue(i, 0):
@@ -395,13 +192,6 @@ class Panel1(wx.Panel):
                     return
 
         elif tabla == 'renovables':
-            self.listaACS.Show(False)
-            self.listaCalefaccion.Show(False)
-            self.listaRefrigeracion.Show(False)
-            self.listaIluminacion.Show(False)
-            self.listaAirePrimario.Show(False)
-            self.listaGT.Show(False)
-            self.listaRenovables.Show(True)
             self.listaActual = 'renovables'
             for i in range(self.listaRenovables.GetNumberRows()):
                 if item == self.listaRenovables.GetCellValue(i, 0):
@@ -409,13 +199,6 @@ class Panel1(wx.Panel):
                     return
 
     def onListaIluminacion(self, event):
-        """
-        Metodo: onListaIluminacion
-        
-        
-        ARGUMENTOS:
-                event:
-        """
         self.cambios = True
         if event.GetCol() == 5:
             if self.listaIluminacion.GetCellValue(event.GetRow(), event.GetCol()) == 'Conocido':
@@ -423,23 +206,9 @@ class Panel1(wx.Panel):
                 self.listaIluminacion.SetReadOnly(event.GetRow(), 6, False)
 
     def onListaRenovables(self, event):
-        """
-        Metodo: onListaRenovables
-        
-        
-        ARGUMENTOS:
-                event:
-        """
         self.cambios = True
 
     def onListaAirePrimario(self, event):
-        """
-        Metodo: onListaAirePrimario
-        
-        
-        ARGUMENTOS:
-                event:
-        """
         self.cambios = True
         if event.GetCol() == 3:
             if self.listaAirePrimario.GetCellValue(event.GetRow(), event.GetCol()) == 'Si':
@@ -448,13 +217,6 @@ class Panel1(wx.Panel):
                 self.listaAirePrimario.SetCellValue(event.GetRow(), 4, '0')
 
     def onListaGT(self, event):
-        """
-        Metodo: onListaGT
-        
-        
-        ARGUMENTOS:
-                event:
-        """
         self.cambios = True
         if event.GetCol() == 4:
             if self.listaGT.GetCellValue(event.GetRow(), event.GetCol()) == 'Conocido':
@@ -462,13 +224,6 @@ class Panel1(wx.Panel):
                 self.listaGT.SetReadOnly(event.GetRow(), 5, False)
 
     def onListaACS(self, event):
-        """
-        Metodo: onListaACS
-        
-        
-        ARGUMENTOS:
-                event:
-        """
         self.cambios = True
         if event.GetCol() == 2:
             if self.listaACS.GetCellValue(event.GetRow(), event.GetCol()) == 'Conocido':
@@ -489,7 +244,7 @@ class Panel1(wx.Panel):
             try:
                 m = float(self.listaACS.GetCellValue(event.GetRow(), event.GetCol()))
                 if self.listaACS.GetCellValue(event.GetRow(), 8) == 'Edificio Objeto':
-                    total = float(self.parent.parent.parent.panelDatosGenerales.superficie.GetValue())
+                    total = float(self.parent.parent.parent.panelDatosGenerales.superficie)
                 else:
                     for i in self.parent.parent.subgrupos:
                         if i.nombre == self.listaACS.GetCellValue(event.GetRow(), 8):
@@ -504,7 +259,7 @@ class Panel1(wx.Panel):
             try:
                 p = float(self.listaACS.GetCellValue(event.GetRow(), event.GetCol()))
                 if self.listaACS.GetCellValue(event.GetRow(), 8) == 'Edificio Objeto':
-                    total = float(self.parent.parent.parent.panelDatosGenerales.superficie.GetValue())
+                    total = float(self.parent.parent.parent.panelDatosGenerales.superficie)
                 else:
                     for i in self.parent.parent.subgrupos:
                         if i.nombre == self.listaACS.GetCellValue(event.GetRow(), 8):
@@ -516,13 +271,6 @@ class Panel1(wx.Panel):
                 logging.info(u'Excepcion en: %s' % __name__)
 
     def onListaCalefaccion(self, event):
-        """
-        Metodo: onListaCalefaccion
-        
-        
-        ARGUMENTOS:
-                event:
-        """
         self.cambios = True
         if event.GetCol() == 2:
             if self.listaCalefaccion.GetCellValue(event.GetRow(), event.GetCol()) == 'Conocido':
@@ -543,7 +291,7 @@ class Panel1(wx.Panel):
             try:
                 m = float(self.listaCalefaccion.GetCellValue(event.GetRow(), event.GetCol()))
                 if self.listaCalefaccion.GetCellValue(event.GetRow(), 8) == 'Edificio Objeto':
-                    total = float(self.parent.parent.parent.panelDatosGenerales.superficie.GetValue())
+                    total = float(self.parent.parent.parent.panelDatosGenerales.superficie)
                 else:
                     for i in self.parent.parent.subgrupos:
                         if i.nombre == self.listaCalefaccion.GetCellValue(event.GetRow(), 8):
@@ -558,7 +306,7 @@ class Panel1(wx.Panel):
             try:
                 p = float(self.listaCalefaccion.GetCellValue(event.GetRow(), event.GetCol()))
                 if self.listaCalefaccion.GetCellValue(event.GetRow(), 8) == 'Edificio Objeto':
-                    total = float(self.parent.parent.parent.panelDatosGenerales.superficie.GetValue())
+                    total = float(self.parent.parent.parent.panelDatosGenerales.superficie)
                 else:
                     for i in self.parent.parent.subgrupos:
                         if i.nombre == self.listaCalefaccion.GetCellValue(event.GetRow(), 8):
@@ -570,13 +318,6 @@ class Panel1(wx.Panel):
                 logging.info(u'Excepcion en: %s' % __name__)
 
     def onListaRefrigeracion(self, event):
-        """
-        Metodo: onListaRefrigeracion
-        
-        
-        ARGUMENTOS:
-                event:
-        """
         self.cambios = True
         if event.GetCol() == 2:
             if self.listaRefrigeracion.GetCellValue(event.GetRow(), event.GetCol()) == 'Conocido':
@@ -586,7 +327,7 @@ class Panel1(wx.Panel):
             try:
                 m = float(self.listaRefrigeracion.GetCellValue(event.GetRow(), event.GetCol()))
                 if self.listaRefrigeracion.GetCellValue(event.GetRow(), 8) == 'Edificio Objeto':
-                    total = float(self.parent.parent.parent.panelDatosGenerales.superficie.GetValue())
+                    total = float(self.parent.parent.parent.panelDatosGenerales.superficie)
                 else:
                     for i in self.parent.parent.subgrupos:
                         if i.nombre == self.listaRefrigeracion.GetCellValue(event.GetRow(), 8):
@@ -601,7 +342,7 @@ class Panel1(wx.Panel):
             try:
                 p = float(self.listaRefrigeracion.GetCellValue(event.GetRow(), event.GetCol()))
                 if self.listaRefrigeracion.GetCellValue(event.GetRow(), 8) == 'Edificio Objeto':
-                    total = float(self.parent.parent.parent.panelDatosGenerales.superficie.GetValue())
+                    total = float(self.parent.parent.parent.panelDatosGenerales.superficie)
                 else:
                     for i in self.parent.parent.subgrupos:
                         if i.nombre == self.listaRefrigeracion.GetCellValue(event.GetRow(), 8):
@@ -613,31 +354,11 @@ class Panel1(wx.Panel):
                 logging.info(u'Excepcion en: %s' % __name__)
 
     def __init__(self, parent, id, pos, size, style, name):
-        """
-        Constructor de la clase
-        
-        
-        ARGUMENTOS:
-                parent:
-                id:
-                pos:
-                size:
-                style:
-                name:
-        """
         self._init_ctrls(parent, id, pos, size, style, name)
         self.parent = parent
         self.cambios = False
 
     def cargarListaEquipoGeneracion(self, listaTabla, listaInst, queCubreLaInstalacion):
-        """
-        M\xe9todo: cargarListaEquipoGeneracion
-        Atributos:
-            listaTabla: tabla que voy construyendo
-            listaInst: array con instalaciones
-            queCubreLaInstalacion: 'ACS', 'calefacci\xf3n', 'refrigeracion' xa saber qeu rendimiento medio estacional hay que coger
-        Recarga la tabla correspondientes
-        """
         if queCubreLaInstalacion == 'ACS':
             contadorArray = 0
         elif queCubreLaInstalacion == 'calefaccion':
@@ -698,11 +419,6 @@ class Panel1(wx.Panel):
             cnt += 1
 
     def cargarListaACS(self):
-        """
-        Metodo: cargarACS
-        
-        
-        """
         try:
             self.listaACS.DeleteRows(0, self.listaGT.GetNumberRows())
         except:
@@ -718,11 +434,6 @@ class Panel1(wx.Panel):
         self.listaACS.AutoSizeColumns()
 
     def cargarListaCalefaccion(self):
-        """
-        Metodo: cargarListaCalefaccion
-        
-        
-        """
         try:
             self.listaCalefaccion.DeleteRows(0, self.listaCalefaccion.GetNumberRows())
         except:
@@ -733,11 +444,6 @@ class Panel1(wx.Panel):
         self.listaCalefaccion.AutoSizeColumns()
 
     def cargarListaRefrigeracion(self):
-        """
-        Metodo: cargarListaRefrigeracion
-        
-        
-        """
         try:
             self.listaRefrigeracion.DeleteRows(0, self.listaRefrigeracion.GetNumberRows())
         except:
@@ -748,9 +454,6 @@ class Panel1(wx.Panel):
         self.listaRefrigeracion.AutoSizeColumns()
 
     def cargarListaGT(self):
-        """
-        Metodo: cargarListaGT
-        """
         try:
             self.listaGT.DeleteRows(0, self.listaGT.GetNumberRows())
         except:
@@ -798,17 +501,12 @@ class Panel1(wx.Panel):
         self.listaGT.AutoSizeColumns()
 
     def cargarListaAirePrimario(self):
-        """
-        Metodo: cargarListaAirePrimario
-        
-        
-        """
         try:
             self.listaAirePrimario.DeleteRows(0, self.listaAirePrimario.GetNumberRows())
         except:
             logging.info(u'Excepcion en: %s' % __name__)
 
-        opcionesRecuperadorCalor = MiChoiceGrid(choices=[(True, _(u'Si')), (False, _(u'No'))])
+        opcionesRecuperadorCalor = MiChoiceGrid(choices=[(True, 'Si'), (False, 'No')])
         self.listaAirePrimario.ampliaDiccionarioTraduccion(opcionesRecuperadorCalor.traduccion)
         for i in range(len(self.parent.ventilacion)):
             self.listaAirePrimario.AppendRows(1)
@@ -825,11 +523,6 @@ class Panel1(wx.Panel):
         self.listaAirePrimario.AutoSizeColumns()
 
     def cargarListaIluminacion(self):
-        """
-        Metodo: cargarListaIluminacion
-        
-        
-        """
         try:
             self.listaIluminacion.DeleteRows(0, self.listaIluminacion.GetNumberRows())
         except:
@@ -839,7 +532,7 @@ class Panel1(wx.Panel):
         opcionesAcividad2 = MiChoiceGrid(choices=tablaZona2)
         self.listaIluminacion.ampliaDiccionarioTraduccion(opcionesAcividad1.traduccion)
         self.listaIluminacion.ampliaDiccionarioTraduccion(opcionesAcividad2.traduccion)
-        opcionesZonaRepresentacion = MiChoiceGrid(choices=[(True, _(u'Si')), (False, _(u'No'))])
+        opcionesZonaRepresentacion = MiChoiceGrid(choices=[(True, 'Si'), (False, 'No')])
         self.listaIluminacion.ampliaDiccionarioTraduccion(opcionesZonaRepresentacion.traduccion)
         for i in range(len(self.parent.iluminacion)):
             self.listaIluminacion.AppendRows(1)
@@ -876,11 +569,6 @@ class Panel1(wx.Panel):
         self.listaIluminacion.AutoSizeColumns()
 
     def cargarListaRenovables(self):
-        """
-        Metodo: cargarListaRenovables
-        
-        
-        """
         try:
             self.listaRenovables.DeleteRows(0, self.listaRenovables.GetNumberRows())
         except:
@@ -911,11 +599,6 @@ class Panel1(wx.Panel):
         self.listaRenovables.AutoSizeColumns()
 
     def cargaVista(self):
-        """
-        Metodo: cargaVista
-        
-        
-        """
         self.cargarListaIluminacion()
         self.cargarListaAirePrimario()
         self.cargarListaGT()
@@ -925,12 +608,7 @@ class Panel1(wx.Panel):
         self.cargarListaRenovables()
 
     def confirmacionUsuario(self):
-        """
-        Metodo: confirmacionUsuario
-        
-        
-        """
-        deseaReemplazar = dialogoConfirma.Dialog1(self, _(u'\xbfDesea guardar los cambios?'))
+        deseaReemplazar = dialogoConfirma.Dialog1(self, '\xbfDesea guardar los cambios?')
         deseaReemplazar.ShowModal()
         if deseaReemplazar.dev == True:
             return True
@@ -939,23 +617,12 @@ class Panel1(wx.Panel):
             return False
 
     def onGuardarBoton(self, event):
-        """
-        Metodo: onGuardarBoton
-        
-            ARGUMENTOS:
-                    event:
-        
-        """
         if self.confirmacionUsuario():
             self.realizaCambios()
         else:
             self.cargaVista()
 
     def realizaCambios(self):
-        """
-        Metodo: realizaCambios
-        
-        """
         listaErrores = u''
         if self.listaACS.IsShown():
             for i in range(self.listaACS.GetNumberRows()):
@@ -969,7 +636,7 @@ class Panel1(wx.Panel):
                 listaErrores += Comprueba2(self.listaACS.GetCellValue(i, 7), 2, listaErrores, u'demanda cubierta %s' % (i + 1), 0).ErrorDevuelto
 
             if listaErrores != u'':
-                wx.MessageBox(_(u'Revise los siguientes campos:\n') + listaErrores, _(u'Aviso'))
+                raise Exception('Revise los siguientes campos:\n' + listaErrores)
                 return False
             self.actualizaACS()
         elif self.listaCalefaccion.IsShown():
@@ -984,75 +651,71 @@ class Panel1(wx.Panel):
                 listaErrores += Comprueba2(self.listaCalefaccion.GetCellValue(i, 7), 2, listaErrores, u'demanda cubierta %s' % (i + 1), 0).ErrorDevuelto
 
             if listaErrores != u'':
-                wx.MessageBox(_(u'Revise los siguientes campos:\n') + listaErrores, _(u'Aviso'))
+                raise Exception('Revise los siguientes campos:\n' + listaErrores)
                 return False
             self.actualizaCalefaccion()
         elif self.listaRefrigeracion.IsShown():
             for i in range(self.listaRefrigeracion.GetNumberRows()):
-                listaErrores += Comprueba(self.listaRefrigeracion.GetCellValue(i, 0), 1, listaErrores, _(u'nombre %s') % (i + 1)).ErrorDevuelto
-                listaErrores += Comprueba(self.listaRefrigeracion.GetCellValue(i, 1), 1, listaErrores, _(u'tipo de equipo %s') % (i + 1)).ErrorDevuelto
-                listaErrores += Comprueba(self.listaRefrigeracion.GetCellValue(i, 2), 1, listaErrores, _(u'definici\xf3n %s') % (i + 1)).ErrorDevuelto
-                listaErrores += Comprueba(self.listaRefrigeracion.GetCellValue(i, 3), 1, listaErrores, _(u'tipo generador %s') % (i + 1)).ErrorDevuelto
-                listaErrores += Comprueba(self.listaRefrigeracion.GetCellValue(i, 4), 1, listaErrores, _(u'tipo combustible %s') % (i + 1)).ErrorDevuelto
-                listaErrores += Comprueba(self.listaRefrigeracion.GetCellValue(i, 5), 2, listaErrores, _(u'rendimiento estacional %s') % (i + 1), 0).ErrorDevuelto
-                listaErrores += Comprueba2(self.listaRefrigeracion.GetCellValue(i, 6), 2, listaErrores, _(u'm2 cubiertos %s') % (i + 1), 0).ErrorDevuelto
-                listaErrores += Comprueba2(self.listaRefrigeracion.GetCellValue(i, 7), 2, listaErrores, _(u'demanda cubierta %s') % (i + 1), 0).ErrorDevuelto
+                listaErrores += Comprueba(self.listaRefrigeracion.GetCellValue(i, 0), 1, listaErrores, 'nombre %s' % (i + 1)).ErrorDevuelto
+                listaErrores += Comprueba(self.listaRefrigeracion.GetCellValue(i, 1), 1, listaErrores, 'tipo de equipo %s' % (i + 1)).ErrorDevuelto
+                listaErrores += Comprueba(self.listaRefrigeracion.GetCellValue(i, 2), 1, listaErrores, 'definici\xf3n %s' % (i + 1)).ErrorDevuelto
+                listaErrores += Comprueba(self.listaRefrigeracion.GetCellValue(i, 3), 1, listaErrores, 'tipo generador %s' % (i + 1)).ErrorDevuelto
+                listaErrores += Comprueba(self.listaRefrigeracion.GetCellValue(i, 4), 1, listaErrores, 'tipo combustible %s' % (i + 1)).ErrorDevuelto
+                listaErrores += Comprueba(self.listaRefrigeracion.GetCellValue(i, 5), 2, listaErrores, 'rendimiento estacional %s' % (i + 1), 0).ErrorDevuelto
+                listaErrores += Comprueba2(self.listaRefrigeracion.GetCellValue(i, 6), 2, listaErrores, 'm2 cubiertos %s' % (i + 1), 0).ErrorDevuelto
+                listaErrores += Comprueba2(self.listaRefrigeracion.GetCellValue(i, 7), 2, listaErrores, 'demanda cubierta %s' % (i + 1), 0).ErrorDevuelto
 
             if listaErrores != u'':
-                wx.MessageBox(_(u'Revise los siguientes campos:\n') + listaErrores, _(u'Aviso'))
+                raise Exception('Revise los siguientes campos:\n' + listaErrores)
                 return False
             self.actualizaRefrigeracion()
         elif self.listaRenovables.IsShown():
             self.actualizaRenovables()
         elif self.listaIluminacion.IsShown():
             for i in range(self.listaIluminacion.GetNumberRows()):
-                listaErrores += Comprueba(self.listaIluminacion.GetCellValue(i, 0), 1, listaErrores, _(u'nombre %s') % (i + 1)).ErrorDevuelto
-                listaErrores += Comprueba(self.listaIluminacion.GetCellValue(i, 1), 1, listaErrores, _(u'zona %s') % (i + 1)).ErrorDevuelto
-                listaErrores += Comprueba(self.listaIluminacion.GetCellValue(i, 2), 2, listaErrores, _(u'superficie %s') % (i + 1), 0).ErrorDevuelto
-                listaErrores += Comprueba(self.listaIluminacion.GetCellValue(i, 3), 1, listaErrores, _(u'zona representaci\xf3n %s') % (i + 1)).ErrorDevuelto
-                listaErrores += Comprueba(self.listaIluminacion.GetCellValue(i, 4), 1, listaErrores, _(u'actividad %s') % (i + 1)).ErrorDevuelto
-                listaErrores += Comprueba(self.listaIluminacion.GetCellValue(i, 5), 1, listaErrores, _(u'definici\xf3n %s') % (i + 1)).ErrorDevuelto
-                listaErrores += Comprueba(self.listaIluminacion.GetCellValue(i, 6), 2, listaErrores, _(u'potencia %s') % (i + 1), 0).ErrorDevuelto
-                listaErrores += Comprueba(self.listaIluminacion.GetCellValue(i, 7), 2, listaErrores, _(u'iluminancia %s') % (i + 1), 0).ErrorDevuelto
+                listaErrores += Comprueba(self.listaIluminacion.GetCellValue(i, 0), 1, listaErrores, 'nombre %s' % (i + 1)).ErrorDevuelto
+                listaErrores += Comprueba(self.listaIluminacion.GetCellValue(i, 1), 1, listaErrores, 'zona %s' % (i + 1)).ErrorDevuelto
+                listaErrores += Comprueba(self.listaIluminacion.GetCellValue(i, 2), 2, listaErrores, 'superficie %s' % (i + 1), 0).ErrorDevuelto
+                listaErrores += Comprueba(self.listaIluminacion.GetCellValue(i, 3), 1, listaErrores, 'zona representaci\xf3n %s' % (i + 1)).ErrorDevuelto
+                listaErrores += Comprueba(self.listaIluminacion.GetCellValue(i, 4), 1, listaErrores, 'actividad %s' % (i + 1)).ErrorDevuelto
+                listaErrores += Comprueba(self.listaIluminacion.GetCellValue(i, 5), 1, listaErrores, 'definici\xf3n %s' % (i + 1)).ErrorDevuelto
+                listaErrores += Comprueba(self.listaIluminacion.GetCellValue(i, 6), 2, listaErrores, 'potencia %s' % (i + 1), 0).ErrorDevuelto
+                listaErrores += Comprueba(self.listaIluminacion.GetCellValue(i, 7), 2, listaErrores, 'iluminancia %s' % (i + 1), 0).ErrorDevuelto
 
             if listaErrores != u'':
-                wx.MessageBox(_(u'Revise los siguientes campos:\n') + listaErrores, _(u'Aviso'))
+                raise Exception('Revise los siguientes campos:\n' + listaErrores)
                 return False
             self.actualizaIluminacion()
         elif self.listaAirePrimario.IsShown():
             for i in range(self.listaAirePrimario.GetNumberRows()):
-                listaErrores += Comprueba(self.listaAirePrimario.GetCellValue(i, 0), 1, listaErrores, _(u'nombre %s') % (i + 1)).ErrorDevuelto
-                listaErrores += Comprueba(self.listaAirePrimario.GetCellValue(i, 1), 1, listaErrores, _(u'zona %s') % (i + 1)).ErrorDevuelto
-                listaErrores += Comprueba(self.listaAirePrimario.GetCellValue(i, 2), 2, listaErrores, _(u'caudal de ventilaci\xf3n %s') % (i + 1), 0).ErrorDevuelto
-                listaErrores += Comprueba(self.listaAirePrimario.GetCellValue(i, 3), 1, listaErrores, _(u'recuperaci\xf3n de calor %s') % (i + 1)).ErrorDevuelto
+                listaErrores += Comprueba(self.listaAirePrimario.GetCellValue(i, 0), 1, listaErrores, 'nombre %s' % (i + 1)).ErrorDevuelto
+                listaErrores += Comprueba(self.listaAirePrimario.GetCellValue(i, 1), 1, listaErrores, 'zona %s' % (i + 1)).ErrorDevuelto
+                listaErrores += Comprueba(self.listaAirePrimario.GetCellValue(i, 2), 2, listaErrores, 'caudal de ventilaci\xf3n %s' % (i + 1), 0).ErrorDevuelto
+                listaErrores += Comprueba(self.listaAirePrimario.GetCellValue(i, 3), 1, listaErrores, 'recuperaci\xf3n de calor %s' % (i + 1)).ErrorDevuelto
                 if self.listaAirePrimario.GetCellValue(i, 3) == True:
-                    listaErrores += Comprueba(self.listaAirePrimario.GetCellValue(i, 4), 2, listaErrores, _(u'rendimiento del recuperador %s') % (i + 1), 0).ErrorDevuelto
+                    listaErrores += Comprueba(self.listaAirePrimario.GetCellValue(i, 4), 2, listaErrores, 'rendimiento del recuperador %s' % (i + 1), 0).ErrorDevuelto
 
             if listaErrores != u'':
-                wx.MessageBox(_(u'Revise los siguientes campos:\n') + listaErrores, _(u'Aviso'))
+                raise Exception('Revise los siguientes campos:\n' + listaErrores)
                 return False
             self.actualizaAirePrimario()
         elif self.listaGT.IsShown():
             for i in range(self.listaGT.GetNumberRows()):
-                listaErrores += Comprueba(self.listaGT.GetCellValue(i, 0), 1, listaErrores, _(u'nombre %s') % (i + 1)).ErrorDevuelto
-                listaErrores += Comprueba(self.listaGT.GetCellValue(i, 1), 1, listaErrores, _(u'zona %s') % (i + 1)).ErrorDevuelto
-                listaErrores += Comprueba(self.listaGT.GetCellValue(i, 2), 1, listaErrores, _(u'tipo de equipo %s') % (i + 1)).ErrorDevuelto
-                listaErrores += Comprueba(self.listaGT.GetCellValue(i, 3), 1, listaErrores, _(u'servicio %s') % (i + 1)).ErrorDevuelto
-                listaErrores += Comprueba(self.listaGT.GetCellValue(i, 4), 1, listaErrores, _(u'definici\xf3n %s') % (i + 1)).ErrorDevuelto
-                listaErrores += Comprueba(self.listaGT.GetCellValue(i, 5), 2, listaErrores, _(u'consumo anual %s') % (i + 1), 0).ErrorDevuelto
+                listaErrores += Comprueba(self.listaGT.GetCellValue(i, 0), 1, listaErrores, 'nombre %s' % (i + 1)).ErrorDevuelto
+                listaErrores += Comprueba(self.listaGT.GetCellValue(i, 1), 1, listaErrores, 'zona %s' % (i + 1)).ErrorDevuelto
+                listaErrores += Comprueba(self.listaGT.GetCellValue(i, 2), 1, listaErrores, 'tipo de equipo %s' % (i + 1)).ErrorDevuelto
+                listaErrores += Comprueba(self.listaGT.GetCellValue(i, 3), 1, listaErrores, 'servicio %s' % (i + 1)).ErrorDevuelto
+                listaErrores += Comprueba(self.listaGT.GetCellValue(i, 4), 1, listaErrores, 'definici\xf3n %s' % (i + 1)).ErrorDevuelto
+                listaErrores += Comprueba(self.listaGT.GetCellValue(i, 5), 2, listaErrores, 'consumo anual %s' % (i + 1), 0).ErrorDevuelto
 
             if listaErrores != u'':
-                wx.MessageBox(_(u'Revise los siguientes campos:\n') + listaErrores, _(u'Aviso'))
+                raise Exception('Revise los siguientes campos:\n' + listaErrores)
                 return False
             self.actualizaGT()
         self.cambios = False
         return True
 
     def actualizaGT(self):
-        """
-        Metodo: actualizaGT
-        
-        """
         cnt = 0
         for i in range(len(self.parent.ventiladores)):
             if self.parent.ventiladores[i][6] == 0:
@@ -1070,20 +733,12 @@ class Panel1(wx.Panel):
             cnt += 1
 
     def actualizaAirePrimario(self):
-        """
-        Metodo: actualizaAirePrimario
-        
-        """
         for i in range(len(self.parent.ventilacion)):
             self.parent.ventilacion[i][2] = self.listaAirePrimario.GetCellValue(i, 2)
             self.parent.ventilacion[i][3] = self.listaAirePrimario.GetCellValue(i, 3)
             self.parent.ventilacion[i][4] = self.listaAirePrimario.GetCellValue(i, 4)
 
     def actualizaIluminacion(self):
-        """
-        Metodo: actualizaIluminacion
-        
-        """
         for i in range(len(self.parent.iluminacion)):
             self.parent.iluminacion[i][7] = self.listaIluminacion.GetCellValue(i, 4)
             if u'Conocido' in self.listaIluminacion.GetCellValue(i, 5):
@@ -1094,11 +749,6 @@ class Panel1(wx.Panel):
             self.parent.iluminacion[i][9][1] = iluminancia
 
     def actualizaRenovables(self):
-        """
-        Metodo: actualizaRenovables
-        
-        
-        """
         for i in range(len(self.parent.contribuciones)):
             datosRenovable = []
             datosRenovable.append(self.listaRenovables.GetCellValue(i, 2))
@@ -1129,10 +779,6 @@ class Panel1(wx.Panel):
             self.parent.contribuciones[i][4] = [reno, elec]
 
     def actualizaRefrigeracion(self):
-        """
-        Metodo: actualizaRefrigeracion
-        
-        """
         cnt = 0
         for i in range(len(self.parent.refrigeracion)):
             if self.listaRefrigeracion.GetCellValue(i, 2) == 'Conocido':
@@ -1233,10 +879,6 @@ class Panel1(wx.Panel):
             cnt += 1
 
     def actualizaCalefaccion(self):
-        """
-        Metodo: actualizaCalefaccion
-        
-        """
         cnt = 0
         for i in range(len(self.parent.calefaccion)):
             if self.listaCalefaccion.GetCellValue(i, 2) == 'Conocido':
@@ -1365,10 +1007,6 @@ class Panel1(wx.Panel):
             cnt += 1
 
     def actualizaACS(self):
-        """
-        Metodo: actualizaACS
-        
-        """
         cnt = 0
         for i in range(len(self.parent.ACS)):
             if self.listaACS.GetCellValue(i, 2) == 'Conocido':

@@ -1,29 +1,10 @@
 # Embedded file name: Instalaciones\tablasValoresInstalaciones.pyc
-"""
-Modulo: tablasValoresInstalaciones.py
-
-"""
 import math
 import logging
 
 class tablasValores:
-    """
-    Clase: tablasValores del modulo tablasValoresInstalaciones.py
-    
-    
-    """
 
     def __init__(self, tipoInstalacion, datos, tipoGenerador, tipoIndicacion):
-        """
-        Constructor de la clase
-        
-        
-        ARGUMENTOS:
-                tipoInstalacion:
-                datos:
-                tipoGenerador:
-                tipoIndicacion:
-        """
         self.tipoInstalacion = tipoInstalacion
         self.datos = datos
         self.zonaClimatica = datos[-1]
@@ -60,15 +41,6 @@ class tablasValores:
             self.rendimientoEstacionalRef = self.obtenerDatosJoule('refrigeracion')
 
     def obtenerDatosCaldera(self, tipoInstalacion):
-        """
-        Metodo: obtenerDatosCaldera
-        El procedimiento est\xe1 basado en la norma Europea
-        EN 15738 - Septiembre 2007, anejo N.5
-        C\xe1lculo de los factores de p\xe9rdida.
-        
-        ARGUMENTOS:
-                tipoInstalacion:
-        """
         try:
             if self.tipoIndicacion == 'Estimado':
                 equipo = self.datos[0]
@@ -120,13 +92,6 @@ class tablasValores:
         return rendimientoEstacional
 
     def obtenerDatosJoule(self, tipoInstalacion):
-        """
-        Metodo: obtenerDatosJoule
-        
-        
-        ARGUMENTOS:
-                tipoInstalacion:
-        """
         equipo = self.datos[0]
         rendNominal = self.datos[2]
         antiguedad = self.datos[3]

@@ -4,15 +4,6 @@ from Instalaciones.funcionCalculoRendimientoEstacional import calculoRendimiento
 from MedidasDeMejora.objetoGrupoMejoras import grupoMedidasMejora
 
 def actualizarInstalacionesGeneracion(instACS, instCal, instRef, instClima, instMixto2, instMixto3, zonaHE1, programa, tipoEdificio):
-    """
-    M\xe9todo: actualizarInstalacionesGeneracion
-    Argumentos:
-                instACS, instCal... :array con datos de instalaciones
-                zonaHE1, 
-                programa: Residencial, Peque\xf1oTerciario, GranTerciario
-                uso: Residencial o Intensidad Media - 12 h....
-    Devuelve los array actualizados: instACS, instCal...
-    """
     instACS = actualizarInstalacionesGeneracionSegunTipo(instalacionesGeneracion=instACS, zonaHE1=zonaHE1, programa=programa, tipoEdificio=tipoEdificio)
     instCal = actualizarInstalacionesGeneracionSegunTipo(instalacionesGeneracion=instCal, zonaHE1=zonaHE1, programa=programa, tipoEdificio=tipoEdificio)
     instRef = actualizarInstalacionesGeneracionSegunTipo(instalacionesGeneracion=instRef, zonaHE1=zonaHE1, programa=programa, tipoEdificio=tipoEdificio)
@@ -28,16 +19,6 @@ def actualizarInstalacionesGeneracion(instACS, instCal, instRef, instClima, inst
 
 
 def actualizarInstalacionesGeneracionSegunTipo(instalacionesGeneracion, zonaHE1, programa, tipoEdificio):
-    """
-    Argumentos: instalacionesGeneracion: array con datos instalaciones de generacion:
-                                         acs, cal, ref, mixto2, clima, mixto3 (le llega de un tipo)
-                zonaHE1
-                programa: Residencial, peque\xf1oTerciario, GranTerciario
-                tipoEdificio: Intensidad Media - 12 h
-    
-    Devuelve el nuevo array con los equipos
-                
-    """
     for equipo in instalacionesGeneracion:
         nombre = equipo[0]
         tipoInstalacion = equipo[1]
@@ -191,12 +172,6 @@ def getkwargsBdCEstSgCurva(datosEquipo, tipoInstalacion):
 
 
 def actualizarRendimientoConjuntosMM(listadoConjuntosMM, zonaHE1, programa, tipoEdificio):
-    """
-    M\xe9todo: actualizarRendimientoConjuntosMM
-    Argumentos: listadoConjuntosMM, zonaHE1, programa, tipoEdificio
-    Devuelve el listado de conjuntos de medidas de mejora con los rendimientos actualizados
-    
-    """
     for conjuntoMM in listadoConjuntosMM:
         if isinstance(conjuntoMM, grupoMedidasMejora):
             if conjuntoMM.mejoras[1][2] == True:

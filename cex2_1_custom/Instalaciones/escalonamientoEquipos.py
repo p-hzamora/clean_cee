@@ -1,33 +1,6 @@
 # Embedded file name: Instalaciones\escalonamientoEquipos.pyc
-"""
-Modulo: escalonamientoEquipos.py
-
-"""
 
 def escalonamiento(listaFraccionPotencias, listaFraccionMinimaEquipo, fcpSistema):
-    """
-    Funcion: escalonamiento
-    
-    
-    ARGUMENTOS:
-            listaFraccionPotencias: contiene un array con la fraccion la potencia total
-                                    que es capaz de entregar cada equipo
-                                    la suma de listaFraccionPotencias debe ser 1. La longitud el array
-                                    es igual al numero de equipos
-    
-            listaFraccionMinimaEquipo: contiene un array con la fraccion m\xednima
-                                        que es capaz de entregar cada equipo
-    
-            fcpSistema: es un array con los valores de carga parcial en los que se ha
-                        contabilidado el funcionamiento del sistema
-    
-     Se devuelve un array con las fcp (factores de carga parcial) de
-     cada equipo con los que tiene que trabajar para de cubrir la
-     carga parcial del sistema
-    
-     Se supone que la entrada es en secuencia y en el orden en el que se han
-     indicadlo los equipos en listaFraccionPotencias
-    """
     frac2 = []
     for fcpS in fcpSistema:
         frac1 = []
@@ -62,29 +35,6 @@ def escalonamiento(listaFraccionPotencias, listaFraccionMinimaEquipo, fcpSistema
 
 
 def porcentajeEnergiaEquipos(listaFraccionPotencias, fcpSistema, porcentajeEnergiaSistema):
-    """
-    Funcion: escalonamiento
-    
-    
-    ARGUMENTOS:
-        listaFraccionPotencias: contiene un array con la fraccion la potencia total
-            que es capaz de entregar cada equipo
-            la suma de listaFraccionPotencias debe ser 1. La longitud el array
-            es igual al numero de equipos
-    
-        fcpSistema: es un array con los valores de carga parcial en los que se ha
-            contabilidado el funcionamiento del sistema
-    
-        porcentajeEnergiaSistema: son los porcentajes de la energia total para cada valor
-                    de fcp del sistema
-    
-    # Suponemos que ningun equipo trabaja a una potencia menor al 30%
-    # esta funcion devuelve en:
-    # energia_equipo2: el porcentaje de la energia total que es suminitrada por cada
-    # equipo
-    # y en
-    # betComb: el porcentaje en tiempo de la carga media
-    """
     fraccionPotenciaMinimaEquipo = [ 0.3 for x in listaFraccionPotencias ]
     equipos = escalonamiento(listaFraccionPotencias, fraccionPotenciaMinimaEquipo, fcpSistema)
     porcEnerEquip2 = []

@@ -3,10 +3,6 @@
 # Decompiled from: Python 3.10.9 | packaged by Anaconda, Inc. | (main, Mar  8 2023, 10:42:25) [MSC v.1916 64 bit (AMD64)]
 # Embedded file name: Instalaciones\perfilesTerciario.pyc
 # Compiled at: 2014-12-09 12:10:30
-"""
-Modulo: perfilesTerciario.py
-
-"""
 
 def getZonaPerfilCalefaccion(zona):
     if zona == 'alpha1':
@@ -53,13 +49,6 @@ def getZonaPerfilRefrigeracion(zona):
 
 
 def PerfilDemandaCalefaccion(zona, uso):
-    """
-    Metodo: PerfilDemandaCalefaccion
-
-    ARGUMENTOS:
-                zona:
-                uso:
-    """
     tablaPerfilDemandaCalefaccion = [
      [
       'A3', 'Intensidad Alta - 8h',
@@ -1290,13 +1279,6 @@ def PerfilDemandaCalefaccion(zona, uso):
 
 
 def PerfilDemandaRefrigeracion(zona, uso):
-    """
-    Metodo: PerfilDemandaRefrigeracion
-
-    ARGUMENTOS:
-                zona:
-                uso:
-    """
     tablaPerfilDemandaRefrigeracion = [
      [
       'A3', 'Intensidad Alta - 8h',
@@ -2505,13 +2487,6 @@ def PerfilDemandaRefrigeracion(zona, uso):
 
 
 def PerfilTemperaturaSecaCalefaccion(zona, uso):
-    """
-    Metodo: PerfilTemperaturaSecaCalefaccion
-
-    ARGUMENTOS:
-                zona:
-                uso:
-    """
     tablaPerfilTemperaturaSecaCalefaccion = [
      [
       'A3', 'Intensidad Alta - 8h',
@@ -3618,13 +3593,6 @@ def PerfilTemperaturaSecaCalefaccion(zona, uso):
 
 
 def PerfilTemperaturaHumedaCalefaccion(zona, uso):
-    """
-    Metodo: PerfilTemperaturaHumedaCalefaccion
-
-    ARGUMENTOS:
-                zona:
-                uso:
-    """
     tablaPerfilTemperaturaHumedaCalefaccion = [
      [
       'A3', 'Intensidad Alta - 8h',
@@ -4731,13 +4699,6 @@ def PerfilTemperaturaHumedaCalefaccion(zona, uso):
 
 
 def PerfilTemperaturaSecaRefrigeracion(zona, uso):
-    """
-    Metodo: PerfilTemperaturaSecaRefrigeracion
-
-    ARGUMENTOS:
-                zona:
-                uso:
-    """
     tablaPerfilTemperaturaSecaRefrigeracion = [
      [
       'A3', 'Intensidad Alta - 8h',
@@ -5823,13 +5784,6 @@ def PerfilTemperaturaSecaRefrigeracion(zona, uso):
 
 
 def PerfilTemperaturaHumedaRefrigeracion(zona, uso):
-    """
-    Metodo: PerfilTemperaturaHumedaRefrigeracion
-
-    ARGUMENTOS:
-                zona:
-                uso:
-    """
     tablaPerfilTemperaturaHumedaRefrigeracion = [
      [
       'A3', 'Intensidad Alta - 8h',
