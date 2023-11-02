@@ -211,6 +211,14 @@ class Clean_MiChoice(IValidator):
             line = pattern.sub(r"MiChoice(choices=\1)",line)
         return line
 
+class Clean_WX_Heritage(IValidator):
+    @staticmethod
+    def convert_str(line: str) -> str:
+        pattern = re.compile(r"(?<=class )(\w+)\b\(wx\.(Dialog|Panel|Frame)\)")
+        if pattern.search(line):
+           return f"class {pattern.search(line).group(1)}():{LAST_CHAR}"
+        return line
+
 
 
 
@@ -239,7 +247,8 @@ class FixLines():
             Clean_WX_CheckBox,
             Clean_WX_SetBackgroundStyle,
             Clean_WX_MessageBoxAsRaise_print,
-            Clean_MiChoice
+            Clean_MiChoice,
+            Clean_WX_Heritage
         )
 
     def fix(self)-> str:
