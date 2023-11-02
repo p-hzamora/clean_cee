@@ -197,6 +197,14 @@ class Clean_WX_SetBackgroundStyle(IValidator):
             return None
         return line
 
+class Clean_WX_Icon(IValidator):
+    @staticmethod
+    def convert_str(line: str) -> str:
+        pattern = re.compile(r"wx\.Icon\(")
+        if pattern.search(line):
+            return None
+        return line
+
 class Clean_WX_MessageBoxAsRaise_print(IValidator):
     is_raise:re.Pattern = re.compile(r",\s?(_\()?'Aviso'\)?")
 
@@ -261,6 +269,7 @@ class FixLines():
             Clean_WX_RadioButton,
             Clean_WX_CheckBox,
             Clean_WX_SetBackgroundStyle,
+            Clean_WX_Icon,
             Clean_WX_MessageBoxAsRaise_print,
             Clean_MiChoice,
             Clean_WX_Heritage,
