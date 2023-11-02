@@ -16,10 +16,21 @@ class IValidator(ABC):
 
 LAST_CHAR = "\r\n"
 
-class DeleteUnderScoreUnicode(IValidator):
+class Clean_import_wx(IValidator):
     @staticmethod
     def convert_str(line: str)->str:
-        pattern = re.compile(r"_\(\s?u?('.*?')\)")
+        pattern = re.compile(r"(?<=^import\s)(wx,?\s?)")
+        if pattern.search(line):
+            if "," in line:
+                return pattern.sub("",line)
+            else:
+                return None
+        return line
+
+class Clean_UnderScoreUnicode(IValidator):
+    @staticmethod
+    def convert_str(line: str)->str:
+        pattern = re.compile(r"_\(\s*u?('.*?')\)")
         if pattern.search(line):
             line = pattern.sub(r"\1",line)
         return line
@@ -28,6 +39,14 @@ class CleanWX_StaticText(IValidator):
     @staticmethod
     def convert_str(line: str) -> str:
         pattern = re.compile(r".+wx\.StaticText\(")
+        if pattern.search(line):
+            return None
+        return line
+
+class CleanWX_StaticBox(IValidator):
+    @staticmethod
+    def convert_str(line: str) -> str:
+        pattern = re.compile(r".+wx\.StaticBox\(")
         if pattern.search(line):
             return None
         return line
@@ -72,6 +91,14 @@ class Clean_WX_Dialog(IValidator):
             return None
         return line
 
+class Clean_WX_Panel(IValidator):
+    @staticmethod
+    def convert_str(line: str) -> str:
+        pattern = re.compile(r"wx\.Panel\.__init__\(")
+        if pattern.search(line):
+            return None
+        return line
+
 class Clean_WX_Button(IValidator):
     @staticmethod
     def convert_str(line: str) -> str:
@@ -81,12 +108,17 @@ class Clean_WX_Button(IValidator):
         return line
 
 class Clean_WX_TextCtrl(IValidator):
-    @staticmethod
-    def convert_str(line: str) -> str:
+    pattern = re.compile(r"(.+ =)\s?wx\.TextCtrl\(.+, value=(.+)\)")
 
-        pattern = re.compile(r"(.+ =)\s?wx\.TextCtrl\(.+, value=(.+)\)")
-        if pattern.search(line):
-            line = " ".join(pattern.search(line).group(1,2))+ LAST_CHAR 
+    @classmethod
+    def convert_str(cls, line: str) -> str:
+
+        text_ctrl = re.compile(r"wx\.TextCtrl\(")
+        if text_ctrl.search(line):
+            if re.search(r"value=",line):
+                line = " ".join(cls.pattern.search(line).group(1,2))+ LAST_CHAR 
+            else:
+                return None
         return line
 
 class Clean_WK_CONST(IValidator):
@@ -118,7 +150,7 @@ class Clean_WX_GetValue(IValidator):
     def convert_str(line: str) -> str:
         pattern = re.compile(r"\.GetValue\(\)")
         if pattern.search(line):
-            None
+            return pattern.sub(r"",line)
         return line
 
 class Clean_WX_SetValue(IValidator):
@@ -129,6 +161,13 @@ class Clean_WX_SetValue(IValidator):
             line = pattern.sub(r"= \1",line)
         return line
 
+class Clean_WX_RadioButton(IValidator):
+    @staticmethod
+    def convert_str(line: str) -> str:
+        pattern = re.compile(r"(wx\.RadioButton\(.+\))")
+        if pattern.search(line):
+            line = pattern.sub(r"False # or True, era un CheckBox que debia elegir el usuario",line)
+        return line
 
 class Clean_WX_CheckBox(IValidator):
     tab= lambda line: re.compile(r"^(\s+)\w").search(line).group(1)
@@ -142,20 +181,16 @@ class Clean_WX_CheckBox(IValidator):
             line = cls.tab(line)+ "# " + cls.var_name(line)+ cls.label(line) + LAST_CHAR
         return line
 
-
 class Clean_WX_SetBackgroundStyle(IValidator):
     @staticmethod
     def convert_str(line: str) -> str:
         pattern = re.compile(r"\.SetBackgroundStyle\(")
         if pattern.search(line):
-            None
+            return None
         return line
 
-
-
-
 class Clean_WX_MessageBoxAsRaise_print(IValidator):
-    is_raise:re.Pattern = re.compile(r", 'Aviso'")
+    is_raise:re.Pattern = re.compile(r",\s?(_\()?'Aviso'\)?")
 
     @classmethod
     def convert_str(cls, line: str) -> str:
@@ -165,10 +200,16 @@ class Clean_WX_MessageBoxAsRaise_print(IValidator):
                 return pattern.sub(r"print",line)
             else:
                 line = pattern.sub(r"raise Exception",line)
-                return cls.is_raise.sub("",line)
+                return cls.is_raise.sub(")",line)
         return line
 
-
+class Clean_MiChoice(IValidator):
+    @staticmethod
+    def convert_str(line: str) -> str:
+        pattern = re.compile(r"MiChoice\(choices=(.+?),.+")
+        if pattern.search(line):
+            line = pattern.sub(r"MiChoice(choices=\1)",line)
+        return line
 
 
 
@@ -177,13 +218,16 @@ class FixLines():
     def __init__(self, line) -> None:
         self._line = line
         self._validator:list[IValidator] = (
-            DeleteUnderScoreUnicode,
+            Clean_import_wx,
+            Clean_UnderScoreUnicode,
             CleanWX_StaticText,
+            CleanWX_StaticBox,
             CleanWX_SetFont,
             CleanWX_SetClientSize,
             CleanWX_SetForegroundColour,
             CleanWX_SetBackgroundColour,
             Clean_WX_Dialog,
+            Clean_WX_Panel,
             Clean_WX_Button,
             Clean_WX_TextCtrl,
             Clean_WK_CONST,
@@ -191,9 +235,11 @@ class FixLines():
             Clean_WX_Bind,
             Clean_WX_GetValue,
             Clean_WX_SetValue,
+            Clean_WX_RadioButton,
             Clean_WX_CheckBox,
             Clean_WX_SetBackgroundStyle,
-            Clean_WX_MessageBoxAsRaise_print
+            Clean_WX_MessageBoxAsRaise_print,
+            Clean_MiChoice
         )
 
     def fix(self)-> str:
@@ -235,7 +281,7 @@ def clean_path(ruta:Path)->int:
         
 
 if __name__ == "__main__":
-    ruta = Path.home()/"Downloads"/"cex"/"cex2_1_custom"/"MedidasDeMejora"
+    ruta = Path.home()/"Downloads"/"cex"/"cex2_1_custom"
 
     total = clean_path(ruta)
     print(f"Se han modificado '{total}' ficheros")
