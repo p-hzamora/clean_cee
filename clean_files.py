@@ -14,11 +14,12 @@ class IValidator(ABC):
     def convert_str(line:str)->str: ...
 
 
+LAST_CHAR = "\r\n"
 
 class DeleteUnderScoreUnicode(IValidator):
     @staticmethod
     def convert_str(line: str)->str:
-        pattern = re.compile(r"_\(\s*u?('.*?')\)")
+        pattern = re.compile(r"_\(\s?u?('.*?')\)")
         if pattern.search(line):
             line = pattern.sub(r"\1",line)
         return line
@@ -26,8 +27,7 @@ class DeleteUnderScoreUnicode(IValidator):
 class CleanWX_StaticText(IValidator):
     @staticmethod
     def convert_str(line: str) -> str:
-        # pattern = re.compile(r"*+wx\.StaticText\(id=.+, label=.+, name=.+, parent=.+, pos=.+, size=.+, style=.+\)")
-        pattern = re.compile(r".+wx\.StaticText\(id=.+, label=.+, name=.+, parent=.+, pos=.+, size=.+, style=.+\)")
+        pattern = re.compile(r".+wx\.StaticText\(")
         if pattern.search(line):
             return None
         return line
@@ -83,11 +83,10 @@ class Clean_WX_Button(IValidator):
 class Clean_WX_TextCtrl(IValidator):
     @staticmethod
     def convert_str(line: str) -> str:
-        SPACE_CHAR = "\r\n"
 
         pattern = re.compile(r"(.+ =)\s?wx\.TextCtrl\(.+, value=(.+)\)")
         if pattern.search(line):
-            line = " ".join(pattern.search(line).group(1,2))+ SPACE_CHAR 
+            line = " ".join(pattern.search(line).group(1,2))+ LAST_CHAR 
         return line
 
 class Clean_WK_CONST(IValidator):
@@ -132,11 +131,41 @@ class Clean_WX_SetValue(IValidator):
 
 
 class Clean_WX_CheckBox(IValidator):
+    tab= lambda line: re.compile(r"^(\s+)\w").search(line).group(1)
+    var_name= lambda line: re.compile(r"\s+(self\.\w+)\s?(?==)").search(line).group(1)
+    label= lambda line: re.compile(r"label\s?=\s?'(.+?)'").search(line).group(1)
+
+    @classmethod
+    def convert_str(cls, line: str) -> str:
+        pattern = re.compile(r"wx\.CheckBox\(")
+        if pattern.search(line):
+            line = cls.tab(line)+ "# " + cls.var_name(line)+ cls.label(line) + LAST_CHAR
+        return line
+
+
+class Clean_WX_SetBackgroundStyle(IValidator):
     @staticmethod
     def convert_str(line: str) -> str:
-        pattern = re.compile(r".+\s?=\s?wx\.CheckBox\(.+(label=\s?.*?,\s?name=.*)\)")
+        pattern = re.compile(r"\.SetBackgroundStyle\(")
         if pattern.search(line):
-            line = pattern.sub(r"# \1",line)
+            None
+        return line
+
+
+
+
+class Clean_WX_MessageBoxAsRaise_print(IValidator):
+    is_raise:re.Pattern = re.compile(r", 'Aviso'")
+
+    @classmethod
+    def convert_str(cls, line: str) -> str:
+        pattern = re.compile(r"wx\.MessageBox")
+        if pattern.search(line):
+            if cls.is_raise.search(line) is None:
+                return pattern.sub(r"print",line)
+            else:
+                line = pattern.sub(r"raise Exception",line)
+                return cls.is_raise.sub("",line)
         return line
 
 
@@ -162,7 +191,9 @@ class FixLines():
             Clean_WX_Bind,
             Clean_WX_GetValue,
             Clean_WX_SetValue,
-            Clean_WX_CheckBox
+            Clean_WX_CheckBox,
+            Clean_WX_SetBackgroundStyle,
+            Clean_WX_MessageBoxAsRaise_print
         )
 
     def fix(self)-> str:
@@ -197,8 +228,8 @@ def clean_path(ruta:Path)->int:
 
 
         # deleted old file and rename the new one with the old name to avoid concurrency
-        # old_name.unlink()
-        # new_name.rename(new_name.with_name(old_name.name))
+        old_name.unlink()
+        new_name.rename(new_name.with_name(old_name.name))
         count+=1
     return count
         
