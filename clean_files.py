@@ -290,7 +290,9 @@ def clean_path(ruta:Path)->int:
         
 
 if __name__ == "__main__":
-    ruta = Path.home()/"Downloads"/"cex"/"cex2_1_custom"
-
-    total = clean_path(ruta)
-    print(f"Se han modificado '{total}' ficheros")
+    ruta= Path.home()/"Downloads"/"cex"/"cex2_1_custom"
+    
+    rutas = [x for x in ruta.iterdir() if x.is_dir()]
+    for x in rutas:
+        count = clean_path(x)
+        print(f"Se han modificado '{count}' ficheros en {x.stem}")
