@@ -243,6 +243,24 @@ class Clean_barra_estado(IValidator):
             return None
         return line
 
+class Clean_accents(IValidator):
+    patterns={
+        re.compile(r"\\xe1"): "á",
+        re.compile(r"\\xe9"): "é",
+        re.compile(r"\\xed"): "í",
+        re.compile(r"\\xf3"): "ó",
+        re.compile(r"\\xfa"): "ú"
+    }
+    
+    @classmethod
+    def convert_str(cls, line: str) -> str:
+        for pattern in cls.patterns:
+            if pattern.search(line):
+                line = pattern.sub(cls.patterns[pattern],line)
+        return line
+
+
+
 
 class FixLines():
     def __init__(self, line) -> None:
@@ -273,7 +291,9 @@ class FixLines():
             Clean_WX_MessageBoxAsRaise_print,
             Clean_MiChoice,
             Clean_WX_Heritage,
-            Clean_barra_estado
+            Clean_barra_estado,
+            Clean_accents
+
         )
 
     def fix(self)-> str:
@@ -286,7 +306,7 @@ class FixLines():
     
 
 
-def clean_path(ruta:Path)->int:
+def clean_path(ruta:str|Path,verbose= False)->None:
     def is_comment(line:str)->bool:
         start = re.compile(r'''^['"]{3}''')
         end = re.compile(r'''['"]{3}$''')
@@ -296,8 +316,9 @@ def clean_path(ruta:Path)->int:
             return True
         return False
 
+    if isinstance(ruta,str):
+        ruta = Path(ruta)
 
-    
     if not ruta.is_dir():
         lista = [ruta]
     else:
@@ -328,8 +349,12 @@ def clean_path(ruta:Path)->int:
         old_name.unlink()
         new_name.rename(new_name.with_name(old_name.name))
         count+=1
-    return count
-        
+    print(f"Se han modificado '{count}' ficheros en {ruta.stem}") if verbose else None
+    return None        
+
+
+
+
 
 if __name__ == "__main__":
     ruta= Path.home()/"Downloads"/"cex"/"cex2_1_custom"
